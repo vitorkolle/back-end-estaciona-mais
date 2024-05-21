@@ -169,6 +169,22 @@ insert into tbl_clientes_veiculo(id_cliente, id_veiculo)values
 
 
 
+##Tabela de Clientes e Forma de Pagamento
+create table tbl_cliente_forma_pagamento(
+id integer not null primary key auto_increment,
+
+##FK_CLIENTES_CLIENTES_FORMA_PAGAMENTO
+id_cliente integer not null,
+constraint FK_CLIENTES_CLIENTES_FORMA_PAGAMENTO
+foreign key(id_cliente) references tbl_clientes(id),
+
+
+##FK_FORMA_PAGAMENTO_CLIENTES_FORMA_PAGAMENTO
+id_forma_pagamento integer not null,
+constraint FK_FORMA_PAGAMENTO_CLIENTES_FORMA_PAGAMENTO
+foreign key(id_forma_pagamento) references tbl_forma_pagamento(id)
+);
+
 ##Tabela de Formas de Pagamento
 create table tbl_forma_pagamento(
 id integer not null primary key auto_increment,
