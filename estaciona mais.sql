@@ -231,5 +231,166 @@ insert into tbl_endereco_emitente(logradouro, bairro, cidade, estado, pais)value
 
 
 
+##Tabela de Recibo
+create table tbl_recibo(
+id integer not null primary key auto_increment,
+valor float not null,
+nome_pagante varchar(80) not null,
+nome_emitente varchar(20) not null,
+cnpj_emitente varchar(18) not null,
+
+## FK PAGAMENTOS RECIBO
+id_pagamentos integer not null,
+constraint FK_PAGAMENTOS_RECIBO
+foreign key(id_pagamentos) references tbl_pagamentos(id),
+
+## FK ENDERECO EMITENTE RECIBO
+id_endereco_emitente integer not null,
+constraint FK_ENDERECO_EMITENTE_RECIBO
+foreign key(id_endereco_emitente) references tbl_endereco_emitente(id)
+);
+
+start transaction;
+insert into tbl_recibo(valor, nome_pagante, nome_emitente, cnpj_emitente, id_pagamentos, id_endereco_emitente)values
+(
+0.00,
+'Kolle',
+'Estaciona Mais',
+'11.111.111/1111-11',
+1,
+1
+);
+
+set @ultimo_id = last_insert_id();
+
+update tbl_recibo
+			set
+            valor = 10.00
+            where id = @ultimo_id;
+commit;
+select * from tbl_recibo;
+
+
+
+
+##Tabela de Disponibilidade
+create table tbl_disponibilidade(
+id integer not null primary key auto_increment,
+disponibilidade boolean not null
+);
+insert into tbl_disponibilidade(disponibilidade)values
+(true),
+(false);
+
+select * from tbl_disponibilidade;
+
+
+
+##Tabela de Cobertura
+create table tbl_cobertura(
+id integer not null primary key auto_increment,
+cobertura boolean not null
+);
+insert into tbl_cobertura(cobertura)values
+(true),
+(false);
+
+select * from tbl_cobertura;
+
+
+
+##Tabela de Categoria de Vagas
+create table tbl_categoria_vagas(
+id integer not null primary key auto_increment,
+categoria_vaga varchar(45) not null
+);
+insert into tbl_categoria_vagas(categoria_vaga)values
+('Carro'),
+('Moto');
+
+select * from tbl_categoria_vagas;
+
+
+
+##Tabela de Vagas
+create table tbl_vagas(
+id integer not null primary key auto_increment,
+codigo_vaga varchar(20) not null,
+piso integer not null,
+
+
+##FK CATEGORIA VAGAS VAGAS
+id_categoria_vagas integer not null,
+constraint FK_CATEGORIA_VAGAS_VAGAS
+foreign key(id_categoria_vagas) references tbl_categoria_vagas(id),
+
+
+##FK DISPONIBILIDADE VAGAS
+id_disponibilidade integer not null,
+constraint FK_DISPONIBILIDADE_VAGAS
+foreign key(id_disponibilidade) references tbl_disponibilidade(id),
+
+
+##FK COBERTURA VAGAS
+id_cobertura integer not null,
+constraint FK_COBERTURA_VAGAS
+foreign key(id_disponibilidade) references tbl_cobertura(id)
+);
+insert into tbl_vagas(codigo_vaga, piso, id_categoria_vagas, id_disponibilidade, id_cobertura)values
+(
+'AAAA1',
+1,
+1,
+1,
+1
+);
+
+select * from tbl_vagas;
+
+
+
+##Tabela de Reservas
+create table tbl_reservas(
+id integer not null primary key auto_increment,
+entrada datetime not null,
+saida datetime not null,
+
+
+##FK VAGA RESERVA
+id_vaga integer not null,
+constraint FK_VAGA_RESERVAS
+foreign key(id_vaga) references tbl_vagas(id),
+
+
+##FK PAGAMENTO RESERVA
+id_pagamento integer not null,
+constraint FK_PAGAMENTO_RESERVAS
+foreign key(id_pagamento) references tbl_pagamentos(id),
+
+
+##FK CLIENTES RESERVAS
+id_cliente integer not null,
+constraint FK_CLIENTE_RESERVAS
+foreign key(id_cliente) references tbl_clientes(id)
+);
+insert into tbl_reservas(entrada, saida, id_vaga, id_pagamento, id_cliente)values
+(
+'2024-05-21 10:58:01',
+'2024-005-21 12:34:21',
+1,
+1,
+1
+);
+
+select * from tbl_reservas;
+
+
+
+
+
+
+
+
+
 
 
