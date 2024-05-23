@@ -6,18 +6,19 @@
  *********************************************************************************************************************/
 
 const { PrismaClient } = require('@prisma/client')
+const { json } = require('body-parser')
 
 const prisma = new PrismaClient()
 
-const selectALLClientes = async function(){
+const selectALLClientes = async function () {
     try {
         let sql = 'select * from tbl_clientes'
 
         let rsClientes = await prisma.$queryRawUnsafe(sql)
 
-        if(rsClientes){
+        if (rsClientes) {
             return rsClientes
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -25,15 +26,15 @@ const selectALLClientes = async function(){
     }
 }
 
-const selectEnderecoClientes = async function(idEndereco){
+const selectEnderecoClientes = async function (idEndereco) {
     try {
         let sql = `select * from tbl_endereco_cliente where id = ${idEndereco}`
 
         let rsEndereco = await prisma.$queryRawUnsafe(sql)
 
-        if(rsEndereco){
+        if (rsEndereco) {
             return rsEndereco
-        }else{
+        } else {
             return false
         }
     } catch (error) {
@@ -41,15 +42,92 @@ const selectEnderecoClientes = async function(idEndereco){
     }
 }
 
-const selectByIdCliente = async function(id){
+const selectByIdCliente = async function (id) {
     try {
         let sql = `select * from tbl_clientes where id = ${id}`
 
         let rsCliente = await prisma.$queryRawUnsafe(sql)
 
-        if(rsCliente){
+        if (rsCliente) {
             return rsCliente
-        }else{
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
+const insertCliente = async function (dadosCliente) {
+    try {
+        let sqlEnderecoCliente =
+            `
+        insert into tbl_endereco_cliente
+                                       (
+                                        logradouro,
+                                        bairro,
+                                        cidade,
+                                        estado,
+                                        pais
+                                       )
+                                       values
+                                       (
+                                        '${dadosCliente.logradouro}',
+                                        '${dadosCliente.bairro}',
+                                        '${dadosCliente.cidade}',
+                                        '${dadosCliente.estado}',
+                                        '${dadosCliente.pais}'
+                                       )
+        `
+        let rsEndereco = await prisma.$executeRawUnsafe(sqlEnderecoCliente)
+        if (rsEndereco) {
+
+            let sqlUltimoEndereco = 'select last_insert_id() from tbl_endereco_cliente limit 1'
+            let rsUltimoEndereco = await prisma.$queryRawUnsafe(sqlUltimoEndereco)
+
+            if (rsUltimoEndereco) {
+               let idFormat = Number(rsUltimoEndereco[0]['last_insert_id()'])
+
+                if (rsEndereco && rsUltimoEndereco) {
+                    let sqlCliente =
+                        `insert into tbl_clientes
+                              (
+                                nome,
+                                data_nascimento,
+                                cpf,
+                                email,
+                                senha,
+                                telefone,
+                                id_endereco_cliente
+                              )
+                              values
+                              (
+                                '${dadosCliente.nome}',
+                                '${dadosCliente.data_nascimento}',
+                                '${dadosCliente.cpf}',
+                                '${dadosCliente.email}',
+                                '${dadosCliente.senha}',
+                                '${dadosCliente.telefone}',
+                                 ${idFormat}
+                              )
+            `
+                    let rsCliente = await prisma.$executeRawUnsafe(sqlCliente)
+
+                    if (rsCliente) {
+                        return rsCliente
+                    } else {
+                        return false
+                    }
+                }
+                else {
+                    return false
+                }
+            }
+            else {
+                return false
+            }
+        }
+        else {
             return false
         }
     } catch (error) {
@@ -59,5 +137,6 @@ const selectByIdCliente = async function(id){
 module.exports = {
     selectALLClientes,
     selectEnderecoClientes,
-    selectByIdCliente
+    selectByIdCliente,
+    insertCliente
 }
