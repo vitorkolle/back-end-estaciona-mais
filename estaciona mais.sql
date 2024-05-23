@@ -218,13 +218,17 @@ id_forma_pagamento integer not null,
 constraint FK_FORMA_PAGAMENTO_PAGAMENTOS
 foreign key(id_forma_pagamento) references tbl_forma_pagamento(id)
 );
-insert into tbl_pagamentos(valor, data_pagamento, id_forma_pagamento)values
+
+alter table tbl_pagamentos
+add column pago boolean not null;
+
+insert into tbl_pagamentos(valor, data_pagamento, id_forma_pagamento, pago)values
 (
 15.00,
 '2019-10-20 12:34:21',
-1
+1,
+true
 );
-
 
 
 ##Tabela de Endereço do emitente
