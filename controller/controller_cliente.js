@@ -18,6 +18,7 @@ const getAllClientes = async function(){
                 const element = dadosClientes[index]
 
                 let enderecoClientes = await clienteDAO.selectEnderecoClientes(element.id_endereco_cliente)
+                
                 element.endereco = enderecoClientes[index]
             }
 
@@ -114,6 +115,18 @@ const setInserirCliente = async function(dadosCliente, contentType){
         }
     } catch (error) {
         return message.ERROR_INTERNAL_SERVER //500 na controller
+    }
+}
+
+const setDeletarClientes = async function(id){
+    let idClientes = id
+
+    let validarID = getByIdCliente(idClientes)
+
+    if(validarID){
+
+    }else{
+        
     }
 }
 

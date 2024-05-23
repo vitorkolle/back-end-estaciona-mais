@@ -6,7 +6,6 @@
  *********************************************************************************************************************/
 
 const { PrismaClient } = require('@prisma/client')
-const { json } = require('body-parser')
 
 const prisma = new PrismaClient()
 
@@ -134,9 +133,26 @@ const insertCliente = async function (dadosCliente) {
         return false
     }
 }
+
+const deleteCliente = async function(id){
+    try {
+        let sql = `delete from tbl_clientes where id = ${id}`
+
+        let rsCliente = await prisma.$queryRawUnsafe(sql)
+
+        if(rsCliente){
+            return rsCliente
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 module.exports = {
     selectALLClientes,
     selectEnderecoClientes,
     selectByIdCliente,
-    insertCliente
+    insertCliente,
+    deleteCliente
 }
