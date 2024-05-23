@@ -67,8 +67,59 @@ const getByIdCliente = async function(id){
 }
 }
 
+const setInserirCliente = async function(dadosCliente, contentType){
+    try {
+        if (String(contentType).toLowerCase() == 'application/json'){
+            let novoClienteJSON = {}
+
+            if(
+                dadosCliente.nome  ==  ''            || dadosCliente.nome == null            || dadosCliente.nome == undefined            || dadosCliente.nome.length > 80            ||
+                dadosCliente.data_nascimento  ==  '' || dadosCliente.data_nascimento == null || dadosCliente.data_nascimento == undefined || dadosCliente.data_nascimento.length > 10 ||
+                dadosCliente.cpf  ==  ''             || dadosCliente.cpf == null             || dadosCliente.cpf == undefined             || dadosCliente.cpf.length > 14             ||
+                dadosCliente.email  ==  ''           || dadosCliente.email == null           || dadosCliente.email == undefined           || dadosCliente.email.length > 100          ||
+                dadosCliente.senha  ==  ''           || dadosCliente.senha == null           || dadosCliente.senha == undefined           || dadosCliente.senha.length > 20           ||
+                dadosCliente.telefone  ==  ''        || dadosCliente.telefone == null        || dadosCliente.telefone == undefined        || dadosCliente.telefone.length > 15        ||
+                dadosCliente.logradouro  ==  ''      || dadosCliente.logradouro == null      || dadosCliente.logradouro == undefined      || dadosCliente.logradouro.length > 100     ||
+                dadosCliente.bairro  ==  ''          || dadosCliente.bairro == null          || dadosCliente.bairro == undefined          || dadosCliente.bairro.length > 50          ||
+                dadosCliente.cidade  ==  ''          || dadosCliente.cidade == null          || dadosCliente.cidade == undefined          || dadosCliente.cidade.length > 100         ||
+                dadosCliente.estado  ==  ''          || dadosCliente.estado == null          || dadosCliente.estado == undefined          || dadosCliente.estado.length > 40          ||
+                dadosCliente.pais  ==  ''            || dadosCliente.pais == null            || dadosCliente.pais == undefined            || dadosCliente.pais.length > 40            
+
+            ){
+                return message.ERROR_REQUIRED_FIELDS //400
+            }
+            else{
+                let novoCliente = await clienteDAO.insertCliente(dadosCliente)
+                
+                let enderecoJSON = {}
+                enderecoJSON.logradouro = dadosCliente.logradouro
+                enderecoJSON.bairro = dadosCliente.bairro
+                enderecoJSON.cidade = dadosCliente.cidade
+                enderecoJSON.estado = dadosCliente.estado
+                enderecoJSON.pais = dadosCliente.pais
+
+                if(novoCliente){
+                    novoClienteJSON.cliente = dadosCliente
+                    novoClienteJSON.endereco = enderecoJSON
+                    novoClienteJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code //200
+                    novoClienteJSON.message = message.SUCCESS_CREATED_ITEM.message
+
+                    return novoClienteJSON
+                }else{
+                    return message.ERROR_INTERNAL_SERVER_DB //500
+                }
+            }
+        }else{
+            return message.ERROR_CONTENT_TYPE //415
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER //500 na controller
+    }
+}
+
 
 module.exports = {
     getAllClientes,
-    getByIdCliente
+    getByIdCliente,
+    setInserirCliente
 }

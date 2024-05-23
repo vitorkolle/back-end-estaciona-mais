@@ -63,6 +63,18 @@ app.get('/v1/estacionaMais/cliente/:id', cors(), async function(request, respons
     response.json(dadosCliente)
 })
 
+//Post de Clientes
+app.post('/v1/estacionaMais/cliente', cors(), bodyParserJSON, async function(request, response){
+    const contentType = request.header('content-type')
+
+    let dadosCliente = request.body
+
+    let resultDadosCliente = await controllerCliente.setInserirCliente(dadosCliente, contentType)
+
+    response.status(resultDadosCliente.status_code)
+    response.json(resultDadosCliente)
+})
+
 //Ativação da porta 8080
 app.listen('8080', function(){
     console.log('API funcionando e aguardando requisições!!!');
