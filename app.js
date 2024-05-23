@@ -63,6 +63,76 @@ app.get('/v1/estacionaMais/cliente/:id', cors(), async function(request, respons
     response.json(dadosCliente)
 })
 
+/****************************Endpoint de Tipo de Veiculos**************** */
+app.get('/v1/estacionaMais/veiculos', cors(), async function(request,response){
+
+let dadosVeiculo = await controllerTipoVeiculo.getListarVeiculos()
+
+response.status(dadosVeiculo.status_code)
+response.json(dadosVeiculo)
+
+
+})
+
+app.get('/v1/estacionaMais/tipoVeiculo', cors(), async function(request, response){
+
+    let nomeVeiculo = request.query.tipo_veiculo
+
+let dadosVeiculo = await controllerTipoVeiculo.getBuscarNomeVeiculo(nomeVeiculo)
+
+response.status(dadosVeiculo.status_code)
+response.json(dadosVeiculo)
+
+})
+
+app.post('/v1/estacionaMais/novoTipoVeiculo', cors(), bodyParserJSON, async function(request, response){
+
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoTipoVeiculo = await controllerTipoVeiculo.setInserirTipoVeiculo(dadosBody, contentType);
+
+    console.log(resultDadosNovoTipoVeiculo)
+    response.status(resultDadosNovoTipoVeiculo.status_code)
+    response.json(resultDadosNovoTipoVeiculo)
+
+
+})
+
+app.put('/v1/estacionaMais/updateTipoVeiculo/:id', cors(), bodyParserJSON, async function(request, response){
+
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    let idV = request.params.id
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoTipo = await controllerTipoVeiculo.setAtualizarVeiculo(dadosBody, contentType, idV);
+
+    console.log(resultDadosNovoTipo)
+    response.status(resultDadosNovoTipo.status_code)
+    response.json(resultDadosNovoTipo)
+
+})
+
+app.delete('/v1/estacionaMais/deleteTipoVeiculo/:id', cors(), async function(request, response){
+
+
+    let idV = request.params.id
+
+    let dadosVeiculo= await controllerTipoVeiculo.setExcluirTipoVeiculo(idV)
+
+    response.status(dadosVeiculo.status_code)
+    response.json(dadosVeiculo)
+
+
+})
+
 //Ativação da porta 8080
 app.listen('8080', function(){
     console.log('API funcionando e aguardando requisições!!!');
