@@ -36,6 +36,39 @@ const getAllClientes = async function(){
     }
 }
 
+const getByIdCliente = async function(id){
+
+    let idCliente = id
+
+    if(idCliente == '' || idCliente == undefined || isNaN(idCliente)){
+        return message.ERROR_INVALID_ID //400
+    }
+    else{
+    const clienteJSON = {}
+
+    let dadosCliente = await clienteDAO.selectByIdCliente(id)
+
+    if(dadosCliente){
+        if(dadosCliente.length > 0){
+            let enderecoCliente = await clienteDAO.selectEnderecoClientes(dadosCliente[0].id_endereco_cliente)
+
+            clienteJSON.cliente = dadosCliente
+            clienteJSON.endereco = enderecoCliente
+            clienteJSON.status_code = 200
+
+            return clienteJSON
+
+        }else{
+            return message.ERROR_NOT_FOUND //404
+        }
+    }else{
+        return message.ERROR_INTERNAL_SERVER_DB //500
+    }
+}
+}
+
+
 module.exports = {
-    getAllClientes
+    getAllClientes,
+    getByIdCliente
 }

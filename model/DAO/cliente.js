@@ -41,7 +41,23 @@ const selectEnderecoClientes = async function(idEndereco){
     }
 }
 
+const selectByIdCliente = async function(id){
+    try {
+        let sql = `select * from tbl_clientes where id = ${id}`
+
+        let rsCliente = await prisma.$queryRawUnsafe(sql)
+
+        if(rsCliente){
+            return rsCliente
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 module.exports = {
     selectALLClientes,
-    selectEnderecoClientes
+    selectEnderecoClientes,
+    selectByIdCliente
 }
