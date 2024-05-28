@@ -94,7 +94,11 @@ const deleteTipoVeiculo = async function (id) {
 
         let result = await prisma.$queryRawUnsafe(sql)
 
-        return result
+        if(result){
+            return result
+        }else{
+            return false
+        }
 
     } catch (error) {
         return false

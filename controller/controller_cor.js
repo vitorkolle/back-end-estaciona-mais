@@ -88,8 +88,38 @@ const setInserirCor = async function (cor, contentType) {
     }
 }
 
+const setExcluirCor = async function (id) {
+    try {
+        //id das classificações
+        let idCor = id
+
+        if (idCor == null || idCor == undefined || idCor == '' || isNaN(idCor)) {
+            return message.ERROR_REQUIRED_FIELDS //400
+        }
+        else {
+            let validarId = await coresDAO.selectByIdCor(idCor)
+
+            if(validarId){
+                let dadosCor = await coresDAO.deleteCor(idCor)
+
+                if (dadosCor) {
+                    return message.SUCCESS_DELETED_ITEM //200
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB //500
+                }
+            }else{
+                return message.ERROR_NOT_FOUND //404
+            }
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER //500 controller
+    }
+}
+
+
 module.exports = {
     getListarCores,
     getBuscarCor,
-    setInserirCor
+    setInserirCor,
+    setExcluirCor
 }

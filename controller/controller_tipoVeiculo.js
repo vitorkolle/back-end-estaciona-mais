@@ -142,7 +142,7 @@ const setExcluirTipoVeiculo = async function (id) {
         //id das classificações
         let idV = id
 
-        if (idV == null || idV == undefined || idV == '') {
+        if (idV == null || idV == undefined || idV == '' || isNaN(idV)) {
             return message.ERROR_REQUIRED_FIELDS //400
         }
         else {
