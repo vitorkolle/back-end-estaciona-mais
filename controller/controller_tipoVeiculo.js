@@ -24,18 +24,16 @@ const getListarTiposVeiculos = async function () {
             return veiculoJSON
         }
         else {
-            return message.ERROR_INTERNAL_SERVER_DB
+            return message.ERROR_NOT_FOUND //404
         }
     }
-
     else {
-        return message.ERROR_INTERNAL_SERVER
+        return message.ERROR_INTERNAL_SERVER_DB //500
     }
 
 }
 
-const getBuscarNomeVeiculo = async function (tipo_veiculo) {
-
+const getBuscarNomeVeiculo = async function(tipo_veiculo){
     const veiculoJSON = {}
 
     let dadosVeiculo = await tipoVeiculoDAO.selectByNomeVeiculo(tipo_veiculo)
@@ -49,34 +47,23 @@ const getBuscarNomeVeiculo = async function (tipo_veiculo) {
             return veiculoJSON
         }
         else {
-            return message.ERROR_INTERNAL_SERVER_DB //500
+            return message.ERROR_NOT_FOUND//404
         }
-
     }
     else {
-        return message.ERROR_INTERNAL_SERVER  //500     
+        return message.ERROR_INTERNAL_SERVER_DB//500     
     }
-
-
-
 }
 
 const setInserirTipoVeiculo = async function (dadosVeiculo, contentType) {
-
     try {
-
-
-
         if (String(contentType).toLowerCase() == 'application/json') {
-
             //objeto JSON de Ator
             const veiculoJSON = {}
-
 
             if (dadosVeiculo.tipo_veiculo == '' || dadosVeiculo.tipo_veiculo == null || dadosVeiculo.tipo_veiculo == undefined || dadosVeiculo.tipo_veiculo.length > 20) {
 
                     return message.ERROR_REQUIRED_FIELDS //400
-
             } else{
                 let validadeStatus = true
 
@@ -94,13 +81,11 @@ const setInserirTipoVeiculo = async function (dadosVeiculo, contentType) {
                         return veiculoJSON
                         
                     } else {
-                       
                         return message.ERROR_INTERNAL_SERVER_DB //500
                     }
                 }
             }
         } else {
-           
             return message.ERROR_CONTENT_TYPE //415
         }
     } catch {
