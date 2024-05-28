@@ -102,10 +102,27 @@ const deleteTipoVeiculo = async function (id) {
 
 }
 
+const selectLastIdTipoVeiculo = async function(){
+    try {
+        let sql = 'select cast(last_insert_id() as decimal) as id from tbl_tipo_veiculo limit 1'
+
+        let rsVeiculo = await prisma.$queryRawUnsafe(sql)
+
+        if(rsVeiculo){
+            return rsVeiculo
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
     selectAllTipoVeiculo,
     selectByIdVeiculo,
     insertTipoVeiculo,
     updateTipoVeiculo,
-    deleteTipoVeiculo
+    deleteTipoVeiculo,
+    selectLastIdTipoVeiculo
 }

@@ -66,12 +66,13 @@ const setInserirTipoVeiculo = async function (dadosVeiculo, contentType) {
             }
             else {
                 let tipoVeiculoNovo = await tipoVeiculoDAO.insertTipoVeiculo(dadosVeiculo)
+                let idVeiculo = await tipoVeiculoDAO.selectLastIdTipoVeiculo()
 
                 if (tipoVeiculoNovo) {
-                    veiculoJSON.tipo_veiculo = dadosVeiculo
-                    veiculoJSON.status = message.SUCCESS_CREATED_ITEM.status
+                    veiculoJSON.id = Number(idVeiculo[0].id)
+                    veiculoJSON.tipo_veiculo = dadosVeiculo.tipo_veiculo
                     veiculoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
-                    veiculoJSON.message = message.SUCCESS_CREATED_ITEM
+                    veiculoJSON.message = message.SUCCESS_CREATED_ITEM.message
 
                     return veiculoJSON
                 }
