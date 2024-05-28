@@ -119,7 +119,6 @@ const setAtualizarVeiculo = async function (dadosVeiculo, contentType, id) {
                     } else {
                         return message.ERROR_INTERNAL_SERVER_DB //500
                     }
-
             }
         }
 
@@ -141,12 +140,18 @@ const setExcluirTipoVeiculo = async function (id) {
             return message.ERROR_REQUIRED_FIELDS //400
         }
         else {
-            let dadosVeiculo = await tipoVeiculoDAO.deleteTipoVeiculo(idV)
+            let validarId = await tipoVeiculoDAO.selectByIdVeiculo(id)
 
-            if (dadosVeiculo) {
-                return message.SUCCESS_DELETED_ITEM //200
-            } else {
-                return message.ERROR_INTERNAL_SERVER_DB //500
+            if(validarId){
+                let dadosVeiculo = await tipoVeiculoDAO.deleteTipoVeiculo(idV)
+
+                if (dadosVeiculo) {
+                    return message.SUCCESS_DELETED_ITEM //200
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB //500
+                }
+            }else{
+                return message.ERROR_NOT_FOUND //404
             }
         }
     } catch (error) {

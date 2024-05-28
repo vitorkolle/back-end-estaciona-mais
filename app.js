@@ -107,7 +107,7 @@ app.get('/v1/estacionaMais/tipoVeiculo/:id', cors(), async function (request, re
 })
 
 //post de tipo de veículo
-app.post('/v1/estacionaMais/novoTipoVeiculo', cors(), bodyParserJSON, async function (request, response) {
+app.post('/v1/estacionaMais/tipoVeiculo', cors(), bodyParserJSON, async function (request, response) {
 
     const contentType = request.header('content-type')
 
@@ -120,7 +120,7 @@ app.post('/v1/estacionaMais/novoTipoVeiculo', cors(), bodyParserJSON, async func
     response.json(resultDadosNovoTipoVeiculo)
 })
 
-app.put('/v1/estacionaMais/updateTipoVeiculo/:id', cors(), bodyParserJSON, async function (request, response) {
+app.put('/v1/estacionaMais/tipoVeiculo/:id', cors(), bodyParserJSON, async function (request, response) {
 
     const contentType = request.header('content-type');
     console.log(contentType);
@@ -137,7 +137,7 @@ app.put('/v1/estacionaMais/updateTipoVeiculo/:id', cors(), bodyParserJSON, async
     response.json(resultDadosNovoTipo)
 })
 
-app.delete('/v1/estacionaMais/deleteTipoVeiculo/:id', cors(), async function (request, response) {
+app.delete('/v1/estacionaMais/tipoVeiculo/:id', cors(), async function (request, response) {
     let idV = request.params.id
 
     let dadosVeiculo = await controllerTipoVeiculo.setExcluirTipoVeiculo(idV)
