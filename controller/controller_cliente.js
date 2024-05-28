@@ -20,10 +20,10 @@ const getAllClientes = async function () {
                 const element = dadosClientes[index]
 
                 enderecoClientes = await clienteDAO.selectEnderecoClientes(element.id_endereco_cliente)
+                element.endereco = enderecoClientes
             }
 
             clientesJSON.clientes = dadosClientes
-            clientesJSON.endereco = enderecoClientes
             clientesJSON.quantidade = dadosClientes.length
             clientesJSON.status_code = 200
 
