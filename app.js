@@ -193,6 +193,22 @@ app.delete('/v1/estacionaMais/cor/:id', cors(), async function (request, respons
     response.json(dadosCor)
 })
 
+
+//put de cor
+app.put('/v1/estacionaMais/cor/:id', cors(), bodyParserJSON, async function (request, response) {
+
+    const contentType = request.header('content-type')
+
+    let idCor = request.params.id
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaCor = await controllerCor.setAtualizarCor(dadosBody, contentType, idCor);
+
+    response.status(resultDadosNovaCor.status_code)
+    response.json(resultDadosNovaCor)
+})
 //Ativação da porta 8080
 app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');

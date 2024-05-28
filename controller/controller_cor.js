@@ -116,10 +116,59 @@ const setExcluirCor = async function (id) {
     }
 }
 
+const setAtualizarCor = async function (cor, contentType, id) {
+    //Validação do content-Type da requisição  
+    try {
+        if (String(contentType).toLowerCase() == 'application/json') {
+            //Cria o objeto JSON para devolver 
+            let novaCorJSON = {}
+            //Validação de campos obrigatórios ou com digitação inválida 
+            if (cor.cor == '' || cor.cor == undefined || cor.cor == null || cor.cor.length > 20) {
+                return message.ERROR_REQUIRED_FIELDS; //400
+            }
+            else {
+                let validarId = await coresDAO.selectByIdCor(id)
+
+                if(validarId.length > 0){
+                    //Validação para verificar se podemos encaminhar os dados para o DAO
+                    cor.id = id
+
+                    //encaminha os dados da classificação para o DAo inserir no BD
+                    let corAtualizada = await coresDAO.updateCor(cor)
+                    //Validação para verificar se o DAO inseriu os dados do BD
+                    if (corAtualizada) {
+                        //Cria o JSON de retorno dos dados(201)
+                        novaCorJSON.id = cor.id
+                        novaCorJSON.cor = cor.cor
+                        novaCorJSON.status = message.SUCCESS_UPDATED_ITEM.status;
+                        novaCorJSON.status_code =  message.SUCCESS_UPDATED_ITEM.status_code;
+                        novaCorJSON.message = message.SUCCESS_UPDATED_ITEM.message;
+
+                        return novaCorJSON; //201
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_DB //500
+                    }
+                }
+                else{
+                    return message.ERROR_INVALID_ID //400
+                }
+            }
+        }
+
+    }
+
+    catch (error) {
+        return message.ERROR_INTERNAL_SERVER //500 ERRO NA CONTROLLER
+    }
+
+
+}
+
 
 module.exports = {
     getListarCores,
     getBuscarCor,
     setInserirCor,
-    setExcluirCor
+    setExcluirCor,
+    setAtualizarCor
 }

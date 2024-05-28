@@ -95,10 +95,30 @@ const deleteCor = async function (id) {
 
 }
 
+const updateCor = async function(cor) {
+    try {
+
+        let sql;
+
+        sql = `update tbl_cores
+        set 
+        cor = '${cor.cor}'
+        where id = ${cor.id}`
+
+        let result = await prisma.$executeRawUnsafe(sql)
+
+        return result
+
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
     selectAllCores,
     selectByIdCor,
     insertCor,
     selectLastIdCor,
-    deleteCor
+    deleteCor,
+    updateCor
 }
