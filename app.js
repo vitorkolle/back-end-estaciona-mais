@@ -209,6 +209,85 @@ app.put('/v1/estacionaMais/cor/:id', cors(), bodyParserJSON, async function (req
     response.status(resultDadosNovaCor.status_code)
     response.json(resultDadosNovaCor)
 })
+
+
+/********************************Endpoints de Marca*************************************/
+app.get('/v1/estacionaMais/listarMarcas', cors(), async function(request, response){
+
+    let resultDadosMarcas = await controllerMarca.getListarMarcas()
+    
+    response.status(resultDadosMarcas.status_code)
+    response.json(resultDadosMarcas)
+    
+    
+    
+    })
+    
+    app.get('/v1/estacionaMais/marca/:id', cors(), async function(request, response){
+    
+    let idMarca = request.params.id
+    
+    let resultDadosMarcas = await controllerMarca.getListarMarcaById(idMarca)
+    
+    response.status(resultDadosMarcas.status_code)
+    response.json(resultDadosMarcas)
+    
+    
+    })
+    
+    app.post('/v1/estacionaMais/novaMarca', cors(), bodyParserJSON, async function(request, response){
+    
+        const contentType = request.header('content-type');
+        console.log(contentType);
+    
+        // Recebe todos os dados encaminhados na requisição pelo body        
+        let dadosBody = request.body
+    
+        let resultDadosNovaMarca= await controllerMarca.setInserirMarca(dadosBody, contentType);
+    
+        console.log(resultDadosNovaMarca)
+        response.status(resultDadosNovaMarca.status_code)
+        response.json(resultDadosNovaMarca)
+    
+    
+    
+    })
+    app.delete('/v1/estacionaMais/deleteMarca/:id', cors(), async function(request, response){
+    
+    let id = request.params.id
+    
+    let resultDadosMarcas = await controllerMarca.setExcluirMarca(id)
+    
+    response.status(resultDadosMarcas.status_code)
+    response.json(resultDadosMarcas)
+    
+    })
+    app.put('/v1/estacionaMais/novaMarca/:id', cors(), bodyParserJSON, async function(request, response){
+    
+        let idV = request.params.id
+    
+        const contentType = request.header('content-type');
+        console.log(contentType);
+    
+        // Recebe todos os dados encaminhados na requisição pelo body        
+        let dadosBody = request.body
+    
+        let resultDadosNovaMarca = await controllerMarca.setInserirMarca(dadosBody, contentType, idV);
+    
+        console.log(resultDadosNovaMarca)
+        response.status(resultDadosNovaMarca.status_code)
+        response.json(resultDadosNovaMarca)
+    
+    
+    
+    })
+
+
+
+
+
+
+
 //Ativação da porta 8080
 app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');
