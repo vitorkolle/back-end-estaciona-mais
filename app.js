@@ -94,15 +94,13 @@ app.get('/v1/estacionaMais/tipoVeiculos', cors(), async function (request, respo
 
     response.status(dadosVeiculo.status_code)
     response.json(dadosVeiculo)
-
-
 })
 
 //get de veículo filtrando pelo id
-app.get('/v1/estacionaMais/tipoVeiculo', cors(), async function (request, response) {
-    let nomeVeiculo = request.query.tipo_veiculo
+app.get('/v1/estacionaMais/tipoVeiculo/:id', cors(), async function (request, response) {
+    let id = request.params.id
 
-    let dadosVeiculo = await controllerTipoVeiculo.getBuscarNomeVeiculo(nomeVeiculo)
+    let dadosVeiculo = await controllerTipoVeiculo.getBuscarVeiculo(id)
 
     response.status(dadosVeiculo.status_code)
     response.json(dadosVeiculo)
@@ -111,12 +109,12 @@ app.get('/v1/estacionaMais/tipoVeiculo', cors(), async function (request, respon
 //post de tipo de veículo
 app.post('/v1/estacionaMais/novoTipoVeiculo', cors(), bodyParserJSON, async function (request, response) {
 
-    const contentType = request.header('content-type');
+    const contentType = request.header('content-type')
 
     // Recebe todos os dados encaminhados na requisição pelo body        
     let dadosBody = request.body
 
-    let resultDadosNovoTipoVeiculo = await controllerTipoVeiculo.setInserirTipoVeiculo(dadosBody, contentType);
+    let resultDadosNovoTipoVeiculo = await controllerTipoVeiculo.setInserirTipoVeiculo(dadosBody, contentType)
 
     response.status(resultDadosNovoTipoVeiculo.status_code)
     response.json(resultDadosNovoTipoVeiculo)

@@ -33,10 +33,10 @@ const getListarTiposVeiculos = async function () {
 
 }
 
-const getBuscarNomeVeiculo = async function(tipo_veiculo){
+const getBuscarVeiculo = async function(id) {
     const veiculoJSON = {}
 
-    let dadosVeiculo = await tipoVeiculoDAO.selectByNomeVeiculo(tipo_veiculo)
+    let dadosVeiculo = await tipoVeiculoDAO.selectByIdVeiculo(id)
 
     if (dadosVeiculo) {
         if (dadosVeiculo.length > 0) {
@@ -62,67 +62,52 @@ const setInserirTipoVeiculo = async function (dadosVeiculo, contentType) {
             const veiculoJSON = {}
 
             if (dadosVeiculo.tipo_veiculo == '' || dadosVeiculo.tipo_veiculo == null || dadosVeiculo.tipo_veiculo == undefined || dadosVeiculo.tipo_veiculo.length > 20) {
-                    return message.ERROR_REQUIRED_FIELDS //400
-            } 
-            else{
-                    let tipoVeiculoNovo = await tipoVeiculoDAO.insertTipoVeiculo(dadosVeiculo)
+                return message.ERROR_REQUIRED_FIELDS //400
+            }
+            else {
+                let tipoVeiculoNovo = await tipoVeiculoDAO.insertTipoVeiculo(dadosVeiculo)
 
-                    if(tipoVeiculoNovo){
-                        veiculoJSON.tipo_veiculo = dadosVeiculo
-                        veiculoJSON.status = message.SUCCESS_CREATED_ITEM.status
-                        veiculoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
-                        veiculoJSON.message = message.SUCCESS_CREATED_ITEM
+                if (tipoVeiculoNovo) {
+                    veiculoJSON.tipo_veiculo = dadosVeiculo
+                    veiculoJSON.status = message.SUCCESS_CREATED_ITEM.status
+                    veiculoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                    veiculoJSON.message = message.SUCCESS_CREATED_ITEM
 
-                        return veiculoJSON
-                    } 
-                    else{
-                        return message.ERROR_INTERNAL_SERVER_DB //500
-                    }
+                    return veiculoJSON
+                }
+                else {
+                    return message.ERROR_INTERNAL_SERVER_DB //500
+                }
             }
         } else {
             return message.ERROR_CONTENT_TYPE //415
         }
     } catch {
-         return message.ERROR_INTERNAL_SERVER //500 controller
+        return message.ERROR_INTERNAL_SERVER //500 controller
     }
 }
 
-const setAtualizarVeiculo = async function(dadosVeiculo, contentType, id){
-    
+const setAtualizarVeiculo = async function (dadosVeiculo, contentType, id) {
     //Validação do content-Type da requisição  
     try {
-
         if (String(contentType).toLowerCase() == 'application/json') {
-
-
             //Cria o objeto JSON para devolver 
             let novoTipoVeiculoJSON = {}
-
-
-
             //Validação de campos obrigatórios ou com digitação inválida 
-            if (dadosVeiculo.tipo_veiculo == '' || dadosVeiculo.tipo_veiculo == undefined || dadosVeiculo.tipo_veiculo == null || dadosVeiculo.tipo_veiculo.length > 20 
-                
+            if (dadosVeiculo.tipo_veiculo == '' || dadosVeiculo.tipo_veiculo == undefined || dadosVeiculo.tipo_veiculo == null || dadosVeiculo.tipo_veiculo.length > 20
+
             ) {
-
                 return message.ERROR_REQUIRED_FIELDS; //400
-
             }
             else {
-
-
-
-                let validateStatus = true;
-
-
                 //Validação para verificar se podemos encaminhar os dados para o DAO
-                if (validateStatus) {
-                    const idV = dadosVeiculo.id = id;
+                    dadosVeiculo.id = id
+
                     //encaminha os dados da classificação para o DAo inserir no BD
                     let tipoAtualizado = await tipoVeiculoDAO.updateTipoVeiculo(dadosVeiculo)
 
                     //Validação para verificar se o DAO inseriu os dados do BD
-                    if (tipoAtualizado & idV) {
+                    if (tipoAtualizado) {
                         //Cria o JSON de retorno dos dados(201)
                         novoTipoVeiculoJSON.file = dadosVeiculo;
                         novoTipoVeiculoJSON.status = message.SUCCESS_CREATED_ITEM.status;
@@ -133,11 +118,6 @@ const setAtualizarVeiculo = async function(dadosVeiculo, contentType, id){
                     } else {
                         return message.ERROR_INTERNAL_SERVER_DB //500
                     }
-
-                }
-                else {
-                    return message.ERROR_NOT_FOUND //404
-                }
 
             }
         }
@@ -151,35 +131,31 @@ const setAtualizarVeiculo = async function(dadosVeiculo, contentType, id){
 
 }
 
-const setExcluirTipoVeiculo = async function(id){
+const setExcluirTipoVeiculo = async function (id) {
     try {
         //id das classificações
         let idV = id
 
-
         if (idV == null || idV == undefined || idV == '') {
             return message.ERROR_REQUIRED_FIELDS //400
-        } else {
+        }
+        else {
             let dadosVeiculo = await tipoVeiculoDAO.deleteTipoVeiculo(idV)
 
-
             if (dadosVeiculo) {
-                return message.SUCCESS_DELETED_ITEM //201
+                return message.SUCCESS_DELETED_ITEM //200
             } else {
                 return message.ERROR_INTERNAL_SERVER_DB //500
             }
         }
-
     } catch (error) {
-
-        return message.ERROR_INTERNAL_SERVER_DB //500
-
+        return message.ERROR_INTERNAL_SERVER //500 controller
     }
-    }
+}
 
 module.exports = {
     getListarTiposVeiculos,
-    getBuscarNomeVeiculo,
+    getBuscarVeiculo,
     setInserirTipoVeiculo,
     setAtualizarVeiculo,
     setExcluirTipoVeiculo

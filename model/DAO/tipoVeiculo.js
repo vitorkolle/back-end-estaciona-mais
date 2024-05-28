@@ -28,13 +28,13 @@ const selectAllTipoVeiculo = async function () {
 
 }
 
-const selectByNomeVeiculo = async function (tipo_veiculo) {
+const selectByIdVeiculo = async function(id) {
     try {
-        let sql = `select * from tbl_tipo_veiculo where tbl_tipo_veiculo.tipo_veiculo LIKE "%${tipo_veiculo}%"`
+        let sql = `select * from tbl_tipo_veiculo where id = ${id}`
 
         let rsVeiculo = await prisma.$queryRawUnsafe(sql)
 
-        if (rsVeiculo.length > 0) {
+        if (rsVeiculo) {
             return rsVeiculo
         } else {
             return false
@@ -104,7 +104,7 @@ const deleteTipoVeiculo = async function (id) {
 
 module.exports = {
     selectAllTipoVeiculo,
-    selectByNomeVeiculo,
+    selectByIdVeiculo,
     insertTipoVeiculo,
     updateTipoVeiculo,
     deleteTipoVeiculo
