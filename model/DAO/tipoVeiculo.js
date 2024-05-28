@@ -17,7 +17,6 @@ const selectAllTipoVeiculo = async function () {
     let sql = `select * from tbl_tipo_veiculo`
 
     let rsVeiculo = await prisma.$queryRawUnsafe(sql)
-    console.log(sql);
 
     if (rsVeiculo.length > 0) {
 
@@ -29,49 +28,46 @@ const selectAllTipoVeiculo = async function () {
 
 }
 
-const selectByNomeVeiculo = async function(tipo_veiculo){
-try{
+const selectByIdVeiculo = async function(id) {
+    try {
+        let sql = `select * from tbl_tipo_veiculo where id = ${id}`
 
-let sql = `select * from tbl_tipo_veiculo where tbl_tipo_veiculo.tipo_veiculo LIKE "%${tipo_veiculo}%"`
-console.log(sql);
+        let rsVeiculo = await prisma.$queryRawUnsafe(sql)
 
-let rsVeiculo = await prisma.$queryRawUnsafe(sql)
- 
-if(rsVeiculo.length > 0){
-    return rsVeiculo
-} else {
-    return false
-}
-}catch(error){
-     return false
-}
+        if (rsVeiculo) {
+            return rsVeiculo
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
 
 }
 
-const insertTipoVeiculo = async function(dadosVeiculo){
-
-try{    
-let sql = `insert into tbl_tipo_veiculo(tipo_veiculo) values (
+const insertTipoVeiculo = async function (dadosVeiculo) {
+    try {
+        let sql = `insert into tbl_tipo_veiculo(tipo_veiculo) values (
                                                                '${dadosVeiculo.tipo_veiculo}'
-                                                                                              )`;
-console.log(sql)
+                                                                    )`
 
-let rsVeiculo = await prisma.$executeRawUnsafe(sql)
 
-if(rsVeiculo){
-   
-    return rsVeiculo
-} else{
-    return false
+        let rsVeiculo = await prisma.$executeRawUnsafe(sql)
+
+        if (rsVeiculo) {
+
+            return rsVeiculo
+        } else {
+            return false
+        }
+    } catch {
+        return false
+    }
+
+
 }
-} catch{
-    return false
-}
 
-
-}
-
-const updateTipoVeiculo = async function(dadosVeiculo){
+const updateTipoVeiculo = async function (dadosVeiculo) {
     try {
 
         let sql;
@@ -81,10 +77,8 @@ const updateTipoVeiculo = async function(dadosVeiculo){
         tipo_veiculo = '${dadosVeiculo.tipo_veiculo}'
         where id = ${dadosVeiculo.id}`
 
-        console.log(sql)
-       
         let result = await prisma.$executeRawUnsafe(sql)
-       
+
         return result
 
     } catch (error) {
@@ -92,17 +86,11 @@ const updateTipoVeiculo = async function(dadosVeiculo){
     }
 }
 
-const deleteTipoVeiculo = async function(id){
-
-try{
-
-   
-
+const deleteTipoVeiculo = async function (id) {
+    try {
         let sql;
 
         sql = `delete from tbl_tipo_veiculo where id = ${id}`
-
-        console.log(sql)
 
         let result = await prisma.$queryRawUnsafe(sql)
 
@@ -114,10 +102,27 @@ try{
 
 }
 
+const selectLastIdTipoVeiculo = async function(){
+    try {
+        let sql = 'select cast(last_insert_id() as decimal) as id from tbl_tipo_veiculo limit 1'
+
+        let rsVeiculo = await prisma.$queryRawUnsafe(sql)
+
+        if(rsVeiculo){
+            return rsVeiculo
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
     selectAllTipoVeiculo,
-    selectByNomeVeiculo,
+    selectByIdVeiculo,
     insertTipoVeiculo,
-    updateTipoVeiculo, 
-    deleteTipoVeiculo
+    updateTipoVeiculo,
+    deleteTipoVeiculo,
+    selectLastIdTipoVeiculo
 }

@@ -41,12 +41,12 @@ app.use((request, response, next) => {
 })
 
 //Criando um objeto para controlar a chegada dos dados da requisição em formato JSON
-const bodyParserJSON =  bodyParser.json()
+const bodyParserJSON = bodyParser.json()
 
 /************************************Endpoints de Clientes*************************************/
 //Get de Todos os Clientes
-app.get('/v1/estacionaMais/clientes', cors(), async function(request, response){
-    
+app.get('/v1/estacionaMais/clientes', cors(), async function (request, response) {
+
     let dadosClientes = await controllerCliente.getAllClientes()
 
     response.status(dadosClientes.status_code)
@@ -54,16 +54,16 @@ app.get('/v1/estacionaMais/clientes', cors(), async function(request, response){
 })
 
 //Get de cliente filtrando pelo id
-app.get('/v1/estacionaMais/cliente/:id', cors(), async function(request, response){
+app.get('/v1/estacionaMais/cliente/:id', cors(), async function (request, response) {
     let id = request.params.id
-    
+
     let dadosCliente = await controllerCliente.getByIdCliente(id)
 
     response.status(dadosCliente.status_code)
     response.json(dadosCliente)
 })
 //Post de Clientes
-app.post('/v1/estacionaMais/cliente', cors(), bodyParserJSON, async function(request, response){
+app.post('/v1/estacionaMais/cliente', cors(), bodyParserJSON, async function (request, response) {
     const contentType = request.header('content-type')
 
     let dadosCliente = request.body
@@ -75,76 +75,79 @@ app.post('/v1/estacionaMais/cliente', cors(), bodyParserJSON, async function(req
 })
 
 
-/****************************Endpoint de Tipo de Veiculos**************** */
-app.get('/v1/estacionaMais/veiculos', cors(), async function(request,response){
+//Delete de Clientes
+app.delete('/v1/estacionaMais/cliente/:id', cors(), bodyParserJSON, async function (request, response) {
+    let id = request.params.id
 
-    let dadosVeiculo = await controllerTipoVeiculo.getListarVeiculos()
-    
+    let dadosCliente = await controllerCliente.setDeletarClientes(id)
+
+    response.status(dadosCliente.status_code)
+    response.json(dadosCliente)
+})
+
+
+/****************************Endpoint de Tipo de Veiculos**************** */
+//get de veículos
+app.get('/v1/estacionaMais/tipoVeiculos', cors(), async function (request, response) {
+
+    let dadosVeiculo = await controllerTipoVeiculo.getListarTiposVeiculos()
+
     response.status(dadosVeiculo.status_code)
     response.json(dadosVeiculo)
-    
-    
-    })
-    
-    app.get('/v1/estacionaMais/tipoVeiculo', cors(), async function(request, response){
-    
-        let nomeVeiculo = request.query.tipo_veiculo
-    
-    let dadosVeiculo = await controllerTipoVeiculo.getBuscarNomeVeiculo(nomeVeiculo)
-    
+})
+
+//get de veículo filtrando pelo id
+app.get('/v1/estacionaMais/tipoVeiculo/:id', cors(), async function (request, response) {
+    let id = request.params.id
+
+    let dadosVeiculo = await controllerTipoVeiculo.getBuscarVeiculo(id)
+
     response.status(dadosVeiculo.status_code)
     response.json(dadosVeiculo)
-    
-    })
-    
-    app.post('/v1/estacionaMais/novoTipoVeiculo', cors(), bodyParserJSON, async function(request, response){
-    
-        const contentType = request.header('content-type');
-        console.log(contentType);
-    
-        // Recebe todos os dados encaminhados na requisição pelo body        
-        let dadosBody = request.body
-    
-        let resultDadosNovoTipoVeiculo = await controllerTipoVeiculo.setInserirTipoVeiculo(dadosBody, contentType);
-    
-        console.log(resultDadosNovoTipoVeiculo)
-        response.status(resultDadosNovoTipoVeiculo.status_code)
-        response.json(resultDadosNovoTipoVeiculo)
-    
-    
-    })
-    
-    app.put('/v1/estacionaMais/updateTipoVeiculo/:id', cors(), bodyParserJSON, async function(request, response){
-    
-        const contentType = request.header('content-type');
-        console.log(contentType);
-    
-        let idV = request.params.id
-    
-        // Recebe todos os dados encaminhados na requisição pelo body        
-        let dadosBody = request.body
-    
-        let resultDadosNovoTipo = await controllerTipoVeiculo.setAtualizarVeiculo(dadosBody, contentType, idV);
-    
-        console.log(resultDadosNovoTipo)
-        response.status(resultDadosNovoTipo.status_code)
-        response.json(resultDadosNovoTipo)
-    
-    })
-    
-    app.delete('/v1/estacionaMais/deleteTipoVeiculo/:id', cors(), async function(request, response){
-    
-    
-        let idV = request.params.id
-    
-        let dadosVeiculo= await controllerTipoVeiculo.setExcluirTipoVeiculo(idV)
-    
-        response.status(dadosVeiculo.status_code)
-        response.json(dadosVeiculo)
-    
-    
-    })
+})
+
+//post de tipo de veículo
+app.post('/v1/estacionaMais/tipoVeiculo', cors(), bodyParserJSON, async function (request, response) {
+
+    const contentType = request.header('content-type')
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoTipoVeiculo = await controllerTipoVeiculo.setInserirTipoVeiculo(dadosBody, contentType)
+
+    response.status(resultDadosNovoTipoVeiculo.status_code)
+    response.json(resultDadosNovoTipoVeiculo)
+})
+
+app.put('/v1/estacionaMais/tipoVeiculo/:id', cors(), bodyParserJSON, async function (request, response) {
+
+    const contentType = request.header('content-type')
+
+    let idV = request.params.id
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoTipo = await controllerTipoVeiculo.setAtualizarVeiculo(dadosBody, contentType, idV);
+
+    response.status(resultDadosNovoTipo.status_code)
+    response.json(resultDadosNovoTipo)
+})
+
+app.delete('/v1/estacionaMais/tipoVeiculo/:id', cors(), async function (request, response) {
+    let idV = request.params.id
+
+    let dadosVeiculo = await controllerTipoVeiculo.setExcluirTipoVeiculo(idV)
+
+    response.status(dadosVeiculo.status_code)
+    response.json(dadosVeiculo)
+
+
+})
+
+
 //Ativação da porta 8080
-app.listen('8080', function(){
+app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');
 })
