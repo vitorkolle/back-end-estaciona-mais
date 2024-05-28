@@ -54,7 +54,42 @@ const getBuscarCor = async function(id) {
     }
 }
 
+
+const setInserirCor = async function (cor, contentType) {
+    try {
+        if (String(contentType).toLowerCase() == 'application/json') {
+            //objeto JSON de Ator
+            const corJSON = {}
+
+            if (cor == '' || cor == null || cor == undefined || cor.length > 20) {
+                return message.ERROR_REQUIRED_FIELDS //400
+            }
+            else {
+                let novaCor = await coresDAO.insertCor(cor)     
+                let idCor = await coresDAO.selectLastIdCor()
+
+                if (novaCor) {
+                    corJSON.id = Number(idCor[0].id)
+                    corJSON.cor = cor.cor
+                    corJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                    corJSON.message = message.SUCCESS_CREATED_ITEM.message
+
+                    return corJSON
+                }
+                else {
+                    return message.ERROR_INTERNAL_SERVER_DB //500
+                }
+            }
+        } else {
+            return message.ERROR_CONTENT_TYPE //415
+        }
+    } catch {
+        return message.ERROR_INTERNAL_SERVER //500 controller
+    }
+}
+
 module.exports = {
     getListarCores,
-    getBuscarCor
+    getBuscarCor,
+    setInserirCor
 }

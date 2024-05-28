@@ -168,6 +168,20 @@ app.get('/v1/estacionaMais/cor/:id', cors(), async function (request, response) 
 })
 
 
+//post de cor
+app.post('/v1/estacionaMais/cor', cors(), bodyParserJSON, async function (request, response) {
+
+    const contentType = request.header('content-type')
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaCor = await controllerCor.setInserirCor(dadosBody, contentType)
+
+    response.status(resultDadosNovaCor.status_code)
+    response.json(resultDadosNovaCor)
+})
+
 
 //Ativação da porta 8080
 app.listen('8080', function () {

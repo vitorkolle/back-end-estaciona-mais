@@ -38,7 +38,46 @@ const selectByIdCor = async function (id) {
 
 }
 
+const insertCor = async function(cor) {
+    try {
+        let sql = `insert into tbl_cores(cor) values (
+                                                 '${cor.cor}'
+                                                     )`
+
+
+        let rsCor = await prisma.$executeRawUnsafe(sql)
+
+        if (rsCor) {
+            return rsCor
+        } else {
+            return false
+        }
+    } catch {
+        return false
+    }
+
+
+}
+
+const selectLastIdCor = async function () {
+    try {
+        let sql = 'select cast(last_insert_id() as decimal) as id from tbl_cores limit 1'
+
+        let rsCor = await prisma.$queryRawUnsafe(sql)
+
+        if (rsCor) {
+            return rsCor
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
 module.exports = {
     selectAllCores,
-    selectByIdCor
+    selectByIdCor,
+    insertCor,
+    selectLastIdCor
 }
