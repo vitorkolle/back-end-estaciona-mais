@@ -12,6 +12,10 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 
 const selectAllTipoVeiculo = async function () {
+    try {
+        let sql = `select * from tbl_tipo_veiculo`
+
+        let rsVeiculo = await prisma.$queryRawUnsafe(sql)
 
 
     let sql = `select * from tbl_tipo_veiculo`
@@ -21,16 +25,25 @@ const selectAllTipoVeiculo = async function () {
 
     if (rsVeiculo.length > 0) {
 
-        return rsVeiculo
-    } else {
-        return false
+        if (rsVeiculo) {
+
+
+            return rsVeiculo
+        } else {
+            return false
+        }
+    } catch (error) {
+        return  false
     }
-
-
 }
+
 
 const selectByNomeVeiculo = async function(tipo_veiculo){
 try{
+
+const selectByIdVeiculo = async function (id) {
+    try {
+        let sql = `select * from tbl_tipo_veiculo where id = ${id}`
 
 let sql = `select * from tbl_tipo_veiculo where tbl_tipo_veiculo.tipo_veiculo LIKE "%${tipo_veiculo}%"`
 console.log(sql);
@@ -106,13 +119,35 @@ try{
 
         let result = await prisma.$queryRawUnsafe(sql)
 
-        return result
+        if(result){
+            return result
+        }else{
+            return false
+        }
 
     } catch (error) {
         return false
     }
 
 }
+
+
+const selectLastIdTipoVeiculo = async function () {
+    try {
+        let sql = 'select cast(last_insert_id() as decimal) as id from tbl_tipo_veiculo limit 1' 
+
+        let rsVeiculo = await prisma.$queryRawUnsafe(sql)
+
+        if (rsVeiculo) {
+            return rsVeiculo
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
 
 module.exports = {
     selectAllTipoVeiculo,

@@ -75,8 +75,25 @@ app.post('/v1/estacionaMais/cliente', cors(), bodyParserJSON, async function(req
 })
 
 
+
 /****************************Endpoint de Tipo de Veiculos**************** */
 app.get('/v1/estacionaMais/tipoVeiculos', cors(), async function(request,response){
+
+//Delete de Clientes
+app.delete('/v1/estacionaMais/cliente/:id', cors(), bodyParserJSON, async function (request, response) {
+    let id = request.params.id
+
+    let dadosCliente = await controllerCliente.setDeletarClientes(id)
+
+    response.status(dadosCliente.status_code)
+    response.json(dadosCliente)
+})
+
+
+/****************************Endpoint de Tipo de Veiculos**********************************/
+//get de veículos
+app.get('/v1/estacionaMais/tipoVeiculos', cors(), async function (request, response) {
+
 
     let dadosVeiculo = await controllerTipoVeiculo.getListarTiposVeiculos()
     
@@ -184,6 +201,11 @@ app.post('/v1/estacionaMais/novaMarca', cors(), bodyParserJSON, async function(r
     response.json(resultDadosNovaMarca)
 
 
+=======
+//put de tipo de veículo
+app.put('/v1/estacionaMais/tipoVeiculo/:id', cors(), bodyParserJSON, async function (request, response) {
+
+
 
 })
 app.delete('/v1/estacionaMais/deleteMarca/:id', cors(), async function(request, response){
@@ -197,6 +219,11 @@ response.json(resultDadosMarcas)
 
 })
 app.put('/v1/estacionaMais/novaMarca/:id', cors(), bodyParserJSON, async function(request, response){
+
+
+
+//delete de tipo de veículo
+app.delete('/v1/estacionaMais/tipoVeiculo/:id', cors(), async function (request, response) {
 
     let idV = request.params.id
 
@@ -214,6 +241,73 @@ app.put('/v1/estacionaMais/novaMarca/:id', cors(), bodyParserJSON, async functio
 
 
 
+})
+/***************************Endpoints de cores****************************/
+//get de cores
+app.get('/v1/estacionaMais/cores', cors(), async function (request, response) {
+
+
+    let dadosCores = await controllerCor.getListarCores()
+
+
+})
+
+
+    response.status(dadosCores.status_code)
+    response.json(dadosCores)
+})
+
+//get de cores filtrando pelo id
+app.get('/v1/estacionaMais/cor/:id', cors(), async function (request, response) {
+    let id = request.params.id
+
+    let dadosCores = await controllerCor.getBuscarCor(id)
+
+    response.status(dadosCores.status_code)
+    response.json(dadosCores)
+})
+
+
+//post de cor
+app.post('/v1/estacionaMais/cor', cors(), bodyParserJSON, async function (request, response) {
+
+    const contentType = request.header('content-type')
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaCor = await controllerCor.setInserirCor(dadosBody, contentType)
+
+    response.status(resultDadosNovaCor.status_code)
+    response.json(resultDadosNovaCor)
+})
+
+
+//delete de core
+app.delete('/v1/estacionaMais/cor/:id', cors(), async function (request, response) {
+    let idCor = request.params.id
+
+    let dadosCor = await controllerCor.setExcluirCor(idCor)
+
+    response.status(dadosCor.status_code)
+    response.json(dadosCor)
+})
+
+
+//put de cor
+app.put('/v1/estacionaMais/cor/:id', cors(), bodyParserJSON, async function (request, response) {
+
+    const contentType = request.header('content-type')
+
+    let idCor = request.params.id
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaCor = await controllerCor.setAtualizarCor(dadosBody, contentType, idCor);
+
+    response.status(resultDadosNovaCor.status_code)
+    response.json(resultDadosNovaCor)
 })
 
 //Ativação da porta 8080

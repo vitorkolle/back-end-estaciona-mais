@@ -178,7 +178,11 @@ const setExcluirTipoVeiculo = async function(id){
         let idV = id
 
 
+
         if (idV == null || idV == undefined || idV == '') {
+
+        if (idV == null || idV == undefined || idV == '' || isNaN(idV)) {
+
             return message.ERROR_REQUIRED_FIELDS //400
         } else {
             let dadosVeiculo = await tipoVeiculoDAO.deleteTipoVeiculo(idV)
