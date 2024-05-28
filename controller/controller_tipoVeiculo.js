@@ -95,13 +95,14 @@ const setAtualizarVeiculo = async function (dadosVeiculo, contentType, id) {
             //Cria o objeto JSON para devolver 
             let novoTipoVeiculoJSON = {}
             //Validação de campos obrigatórios ou com digitação inválida 
-            if (dadosVeiculo.tipo_veiculo == '' || dadosVeiculo.tipo_veiculo == undefined || dadosVeiculo.tipo_veiculo == null || dadosVeiculo.tipo_veiculo.length > 20
-
-            ) {
+            if (dadosVeiculo.tipo_veiculo == '' || dadosVeiculo.tipo_veiculo == undefined || dadosVeiculo.tipo_veiculo == null || dadosVeiculo.tipo_veiculo.length > 20) {
                 return message.ERROR_REQUIRED_FIELDS; //400
             }
             else {
-                //Validação para verificar se podemos encaminhar os dados para o DAO
+                let validarId = await tipoVeiculoDAO.selectByIdVeiculo(id)
+
+                if(validarId.length > 0){
+                    //Validação para verificar se podemos encaminhar os dados para o DAO
                     dadosVeiculo.id = id
 
                     //encaminha os dados da classificação para o DAo inserir no BD
@@ -110,7 +111,8 @@ const setAtualizarVeiculo = async function (dadosVeiculo, contentType, id) {
                     //Validação para verificar se o DAO inseriu os dados do BD
                     if (tipoAtualizado) {
                         //Cria o JSON de retorno dos dados(201)
-                        novoTipoVeiculoJSON.file = dadosVeiculo;
+                        novoTipoVeiculoJSON.id = dadosVeiculo.id
+                        novoTipoVeiculoJSON.tipo_veiculo = dadosVeiculo.tipo_veiculo
                         novoTipoVeiculoJSON.status = message.SUCCESS_CREATED_ITEM.status;
                         novoTipoVeiculoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code;
                         novoTipoVeiculoJSON.message = message.SUCCESS_CREATED_ITEM.message;
@@ -119,6 +121,10 @@ const setAtualizarVeiculo = async function (dadosVeiculo, contentType, id) {
                     } else {
                         return message.ERROR_INTERNAL_SERVER_DB //500
                     }
+                }
+                else{
+                    return message.ERROR_INVALID_ID //400
+                }
             }
         }
 

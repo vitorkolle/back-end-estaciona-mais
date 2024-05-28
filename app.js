@@ -122,8 +122,7 @@ app.post('/v1/estacionaMais/tipoVeiculo', cors(), bodyParserJSON, async function
 
 app.put('/v1/estacionaMais/tipoVeiculo/:id', cors(), bodyParserJSON, async function (request, response) {
 
-    const contentType = request.header('content-type');
-    console.log(contentType);
+    const contentType = request.header('content-type')
 
     let idV = request.params.id
 
@@ -132,7 +131,6 @@ app.put('/v1/estacionaMais/tipoVeiculo/:id', cors(), bodyParserJSON, async funct
 
     let resultDadosNovoTipo = await controllerTipoVeiculo.setAtualizarVeiculo(dadosBody, contentType, idV);
 
-    console.log(resultDadosNovoTipo)
     response.status(resultDadosNovoTipo.status_code)
     response.json(resultDadosNovoTipo)
 })
