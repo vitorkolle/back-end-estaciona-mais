@@ -75,6 +75,17 @@ app.post('/v1/estacionaMais/cliente', cors(), bodyParserJSON, async function(req
 })
 
 
+//Delete de Clientes
+app.delete('/v1/estacionaMais/cliente/:id', cors(), bodyParserJSON, async function(request, response){
+    let id = request.params.id
+
+    let dadosCliente = await controllerCliente.setDeletarClientes(id)
+
+    response.status(dadosCliente.status_code)
+    response.json(dadosCliente)
+})
+
+
 /****************************Endpoint de Tipo de Veiculos**************** */
 app.get('/v1/estacionaMais/tipoVeiculos', cors(), async function(request,response){
 
