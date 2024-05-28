@@ -62,34 +62,28 @@ const setInserirTipoVeiculo = async function (dadosVeiculo, contentType) {
             const veiculoJSON = {}
 
             if (dadosVeiculo.tipo_veiculo == '' || dadosVeiculo.tipo_veiculo == null || dadosVeiculo.tipo_veiculo == undefined || dadosVeiculo.tipo_veiculo.length > 20) {
-
                     return message.ERROR_REQUIRED_FIELDS //400
-            } else{
-                let validadeStatus = true
-
-                if(validadeStatus){
+            } 
+            else{
                     let tipoVeiculoNovo = await tipoVeiculoDAO.insertTipoVeiculo(dadosVeiculo)
 
-                  console.log(tipoVeiculoNovo);
                     if(tipoVeiculoNovo){
-                        veiculoJSON.file = dadosVeiculo
-                        veiculoJSON.quantidade = dadosVeiculo.length
+                        veiculoJSON.tipo_veiculo = dadosVeiculo
                         veiculoJSON.status = message.SUCCESS_CREATED_ITEM.status
                         veiculoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
                         veiculoJSON.message = message.SUCCESS_CREATED_ITEM
 
                         return veiculoJSON
-                        
-                    } else {
+                    } 
+                    else{
                         return message.ERROR_INTERNAL_SERVER_DB //500
                     }
-                }
             }
         } else {
             return message.ERROR_CONTENT_TYPE //415
         }
     } catch {
-         return message.ERROR_INTERNAL_SERVER
+         return message.ERROR_INTERNAL_SERVER //500 controller
     }
 }
 

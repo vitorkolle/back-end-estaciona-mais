@@ -108,18 +108,16 @@ app.get('/v1/estacionaMais/tipoVeiculo', cors(), async function (request, respon
     response.json(dadosVeiculo)
 })
 
-
+//post de tipo de veículo
 app.post('/v1/estacionaMais/novoTipoVeiculo', cors(), bodyParserJSON, async function (request, response) {
 
     const contentType = request.header('content-type');
-    console.log(contentType);
 
     // Recebe todos os dados encaminhados na requisição pelo body        
     let dadosBody = request.body
 
     let resultDadosNovoTipoVeiculo = await controllerTipoVeiculo.setInserirTipoVeiculo(dadosBody, contentType);
 
-    console.log(resultDadosNovoTipoVeiculo)
     response.status(resultDadosNovoTipoVeiculo.status_code)
     response.json(resultDadosNovoTipoVeiculo)
 })
