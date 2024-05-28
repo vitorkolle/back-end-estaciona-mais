@@ -12,23 +12,23 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient();
 
 const selectAllTipoVeiculo = async function () {
+    try {
+        let sql = `select * from tbl_tipo_veiculo`
 
+        let rsVeiculo = await prisma.$queryRawUnsafe(sql)
 
-    let sql = `select * from tbl_tipo_veiculo`
+        if (rsVeiculo) {
 
-    let rsVeiculo = await prisma.$queryRawUnsafe(sql)
-
-    if (rsVeiculo.length > 0) {
-
-        return rsVeiculo
-    } else {
-        return false
+            return rsVeiculo
+        } else {
+            return false
+        }
+    } catch (error) {
+        return  false
     }
-
-
 }
 
-const selectByIdVeiculo = async function(id) {
+const selectByIdVeiculo = async function (id) {
     try {
         let sql = `select * from tbl_tipo_veiculo where id = ${id}`
 
@@ -102,15 +102,15 @@ const deleteTipoVeiculo = async function (id) {
 
 }
 
-const selectLastIdTipoVeiculo = async function(){
+const selectLastIdTipoVeiculo = async function () {
     try {
         let sql = 'select cast(last_insert_id() as decimal) as id from tbl_tipo_veiculo limit 1'
 
         let rsVeiculo = await prisma.$queryRawUnsafe(sql)
 
-        if(rsVeiculo){
+        if (rsVeiculo) {
             return rsVeiculo
-        }else{
+        } else {
             return false
         }
     } catch (error) {
