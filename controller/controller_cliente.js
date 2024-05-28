@@ -14,15 +14,16 @@ const getAllClientes = async function(){
 
     if(dadosClientes){
         if(dadosClientes.length > 0){
+            let enderecoClientes
+
             for (let index = 0; index < dadosClientes.length; index++) { 
                 const element = dadosClientes[index]
 
-                let enderecoClientes = await clienteDAO.selectEnderecoClientes(element.id_endereco_cliente)
-                
-                element.endereco = enderecoClientes[index]
+                enderecoClientes = await clienteDAO.selectEnderecoClientes(element.id_endereco_cliente)
             }
 
             clientesJSON.clientes = dadosClientes
+            clientesJSON.endereco = enderecoClientes
             clientesJSON.quantidade = dadosClientes.length
             clientesJSON.status_code = 200
 

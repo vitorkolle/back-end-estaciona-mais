@@ -76,9 +76,9 @@ app.post('/v1/estacionaMais/cliente', cors(), bodyParserJSON, async function(req
 
 
 /****************************Endpoint de Tipo de Veiculos**************** */
-app.get('/v1/estacionaMais/veiculos', cors(), async function(request,response){
+app.get('/v1/estacionaMais/tipoVeiculos', cors(), async function(request,response){
 
-    let dadosVeiculo = await controllerTipoVeiculo.getListarVeiculos()
+    let dadosVeiculo = await controllerTipoVeiculo.getListarTiposVeiculos()
     
     response.status(dadosVeiculo.status_code)
     response.json(dadosVeiculo)

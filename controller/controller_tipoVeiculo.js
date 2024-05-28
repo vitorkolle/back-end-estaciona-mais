@@ -9,7 +9,7 @@ const message = require('../config.js');
 
 const tipoVeiculoDAO = require('../model/DAO/tipoVeiculo.js');
 
-const getListarVeiculos = async function () {
+const getListarTiposVeiculos = async function () {
 
     const veiculoJSON = {}
 
@@ -199,7 +199,7 @@ const setExcluirTipoVeiculo = async function(id){
     }
 
 module.exports = {
-    getListarVeiculos,
+    getListarTiposVeiculos,
     getBuscarNomeVeiculo,
     setInserirTipoVeiculo,
     setAtualizarVeiculo,
