@@ -149,10 +149,28 @@ const deleteCliente = async function(id){
         return false
     }
 }
+
+const selectLastIdClientes = async function(){
+    try {
+        let sql = 'select cast(last_insert_id() as decimal) as id from tbl_clientes limit 1'
+
+        let rsCliente = await prisma.$queryRawUnsafe(sql)
+
+        if(rsCliente){
+            return rsCliente
+        }
+        else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 module.exports = {
     selectALLClientes,
     selectEnderecoClientes,
     selectByIdCliente,
     insertCliente,
-    deleteCliente
+    deleteCliente,
+    selectLastIdClientes
 }
