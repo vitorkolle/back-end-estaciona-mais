@@ -283,9 +283,54 @@ app.get('/v1/estacionaMais/listarMarcas', cors(), async function(request, respon
     })
 
 
+/************************Endpoints de categoria de vagas****************************/
+app.get('/v1/estacionaMais/listarTipoVaga', cors(), async function(request, response){
+    let resultDadosTipoVagas = await controller_categoriaVaga.getListarTipoVaga()
+ 
+    console.log(resultDadosTipoVagas);
+    response.status(resultDadosTipoVagas.status_code)
+    response.json(resultDadosTipoVagas)    
+})
+
+app.get('/v1/estacionaMais/buscarTipoVeiculo/:id', cors(), async function(request, response){
+    let idV = request.params.id
+
+    let resultDadosTipoVagas = await controllerCategoriaVagas.getBuscarTipoVagaById(idV)
+
+    console.log(resultDadosTipoVagas)
+    response.status(resultDadosTipoVagas.status_code)
+    response.json(resultDadosTipoVagas)
+})
+//Problema de endpoint não encontrado
+app.post('/v1/estacionaMais/novoTipoVaga', cors(), bodyParserJSON, async function(request, response){
+
+    const contentType = request.headers['content-type'];
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoTipoVaga = await controllerCategoriaVagas.setInserirTipoVaga(dadosBody, contentType);
+
+    console.log(resultDadosNovoTipoVaga)
+    response.status(resultDadosNovoTipoVaga.status_code)
+    response.json(resultDadosNovoTipoVaga)
 
 
+})
+//Problema de endpoint não encontrado
+app.delete('/v1/estacionaMais/excluirTipoVaga/:id', cors(), async function(request, response){
 
+    let idV = request.params.id
+    
+    let resultDadosVagas = await controllerCategoriaVagas.setExcluirTipoVaga(idV)
+    
+    console.log(resultDadosVagas);
+    response.status(resultDadosVagas.status_code)
+    response.json(resultDadosVagas)
+    
+    
+    })
 
 
 //Ativação da porta 8080
