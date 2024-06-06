@@ -4,14 +4,16 @@
  * Data: 21/05
  * Versão: 1.0 
  *********************************************************************************************************************/
+const { PrismaClient } = require('@prisma/client') 
+
+const prisma = new PrismaClient()
+
 const selectAllMarca = async function () {
 
     let sql = `select * from tbl_marcas`
-    console.log(sql)
 
     let result = await prisma.$queryRawUnsafe(sql)
-    
-
+     
     if (result) {
         return result
     } else {
@@ -19,9 +21,6 @@ const selectAllMarca = async function () {
         return false
 
     }
-
-
-
 }
 
 const selectMarcaById = async function (id) {

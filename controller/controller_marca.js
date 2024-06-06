@@ -4,6 +4,9 @@
  * Autor: Vitor Paes Kolle
  * Versão: 1.0 
  ***********************************************************************************************************/
+const marcaDAO = require('../model/DAO/marca')
+const message = require('../config.js')
+
 const getListarMarcas = async function () {
 
     const marcaJSON = {}
@@ -58,7 +61,7 @@ const getListarMarcaById = async function (id) {
 
     const marcaJSON = {}
 
-    let dadosMarca = await marcaDAO.selectAllMarca(id)
+    let dadosMarca = await marcaDAO.selectMarcaById(id)
 
     if (dadosMarca) {
         if (dadosMarca.length > 0) {
@@ -103,7 +106,7 @@ const setInserirMarca = async function(dadosMarca, contentType){
 
                   console.log(marcaNova);
                     if(marcaNova){
-                        marcaJSON.file = dadosMarca
+                        marcaJSON.marca = dadosMarca.marca
                         marcaJSON.quantidade = dadosMarca.length
                         marcaJSON.status = message.SUCCESS_CREATED_ITEM.status
                         marcaJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
