@@ -4,6 +4,9 @@
  * Autor: Vitor Paes Kolle
  * Versão: 1.0 
  ***********************************************************************************************************/
+const vagaDAO = require('../model/DAO/categoriaVaga.js')
+const message = require('../config.js')
+
 const getListarTipoVaga = async function () {
 
     const vagaJSON = {}

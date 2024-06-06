@@ -282,7 +282,7 @@ app.put('/v1/estacionaMais/novaMarca/:id', cors(), bodyParserJSON, async functio
 
 /************************Endpoints de categoria de vagas****************************/
 app.get('/v1/estacionaMais/listarTipoVaga', cors(), async function (request, response) {
-    let resultDadosTipoVagas = await controller_categoriaVaga.getListarTipoVaga()
+    let resultDadosTipoVagas = await controllerCategoriaVagas.getListarTipoVaga()
 
     console.log(resultDadosTipoVagas);
     response.status(resultDadosTipoVagas.status_code)
