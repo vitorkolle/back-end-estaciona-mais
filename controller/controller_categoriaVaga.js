@@ -68,14 +68,12 @@ const setInserirTipoVaga = async function(dadosVaga, contentType){
                     return message.ERROR_REQUIRED_FIELDS //400
 
             } else{
-                let validadeStatus = true
 
-                if(validadeStatus){
-                    let vagaNova = await vagaDAO.insertTipoVaga(dadosMarca)
+                    let vagaNova = await vagaDAO.insertTipoVaga(dadosVaga)
 
                   console.log(vagaNova);
                     if(vagaNova){
-                        vagaJSON.file = dadosVaga
+                        vagaJSON.categoria_vaga = dadosVaga.categoria_vaga
                         vagaJSON.quantidade = dadosVaga.length
                         vagaJSON.status = message.SUCCESS_CREATED_ITEM.status
                         vagaJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
@@ -87,7 +85,6 @@ const setInserirTipoVaga = async function(dadosVaga, contentType){
                        
                         return message.ERROR_INTERNAL_SERVER_DB //500
                     }
-                }
             }
         } else {
            
@@ -127,9 +124,53 @@ try{
 
 }
 
+const setAtualizarCategoriaVaga = async function(categoriavaga, contentType, id){
+
+    try {
+
+
+        if (String(contentType).toLowerCase() == 'application/json') {
+
+            //objeto JSON de Ator
+            const categoriaVagaJSON = {}
+
+            if (categoriavaga.categoria_vaga == '' || categoriavaga.categoria_vaga == null || categoriavaga.categoria_vaga == undefined || categoriavaga.categoria_vaga.length > 20) {
+
+                    return message.ERROR_REQUIRED_FIELDS //400
+
+            } else{
+                    categoriavaga.id = id
+                    let marcaNova = await vagaDAO.updateTipoVaga(categoriavaga)
+
+
+                    if(marcaNova){
+                        categoriaVagaJSON.id = id
+                        categoriaVagaJSON.categoria_vaga = categoriavaga.categoria_vaga
+                        categoriaVagaJSON.quantidade = categoriavaga.length
+                        categoriaVagaJSON.status = message.SUCCESS_CREATED_ITEM.status
+                        categoriaVagaJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                        categoriaVagaJSON.message = message.SUCCESS_CREATED_ITEM
+
+                        return categoriaVagaJSON
+                        
+                    } else {
+                       
+                        return message.ERROR_INTERNAL_SERVER_DB //500
+                    }
+            }
+        } else {
+           
+            return message.ERROR_CONTENT_TYPE //415
+        }
+    } catch {
+         return message.ERROR_INTERNAL_SERVER
+    }
+}
+
 module.exports = {
     getListarTipoVaga,
     getBuscarTipoVagaById,
     setInserirTipoVaga,
-    setExcluirTipoVaga
+    setExcluirTipoVaga,
+    setAtualizarCategoriaVaga
 }

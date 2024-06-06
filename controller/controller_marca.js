@@ -32,31 +32,6 @@ const getListarMarcas = async function () {
 
 }
 
-const getListarMarca = async function () {
-
-    const marcaJSON = {}
-
-    let dadosMarca = await marcaDAO.selectAllMarca()
-
-    if (dadosMarca) {
-        if (dadosMarca.length > 0) {
-            marcaJSON.veiculo = dadosMarca
-            marcaJSON.quantidade = dadosMarca.length
-            marcaJSON.status_code = 200
-
-            return marcaJSON
-        }
-        else {
-            return message.ERROR_INTERNAL_SERVER_DB
-        }
-    }
-
-    else {
-        return message.ERROR_INTERNAL_SERVER
-    }
-
-}
-
 const getListarMarcaById = async function (id) {
 
     const marcaJSON = {}
@@ -169,21 +144,18 @@ const setAtualizarMarca = async function(dadosMarca, contentType, id){
             //objeto JSON de Ator
             const marcaJSON = {}
 
-
             if (dadosMarca.marca == '' || dadosMarca.marca == null || dadosMarca.marca == undefined || dadosMarca.marca.length > 20) {
 
                     return message.ERROR_REQUIRED_FIELDS //400
 
             } else{
-                let validadeStatus = true
-
-                if(validadeStatus){
+                    dadosMarca.id = id
                     let marcaNova = await marcaDAO.updateMarca(dadosMarca)
-                    console.log(marcaNova);
-                    const idV = dadosVeiculo.id = id;
 
-                    if(marcaNova & idV){
-                        marcaJSON.file = dadosMarca
+
+                    if(marcaNova){
+                        marcaJSON.id = id
+                        marcaJSON.marca = dadosMarca.marca
                         marcaJSON.quantidade = dadosMarca.length
                         marcaJSON.status = message.SUCCESS_CREATED_ITEM.status
                         marcaJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
@@ -195,7 +167,6 @@ const setAtualizarMarca = async function(dadosMarca, contentType, id){
                        
                         return message.ERROR_INTERNAL_SERVER_DB //500
                     }
-                }
             }
         } else {
            

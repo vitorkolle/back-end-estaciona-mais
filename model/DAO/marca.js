@@ -81,7 +81,7 @@ if(rsMarca){
 const updateMarca = async function(dadosMarca){
 
 let sql = `UPDATE tbl_marcas SET
-valor = "${dadosMarca.marca}"
+marca = "${dadosMarca.marca}"
 where id = ${dadosMarca.id}`
 
 console.log(sql);

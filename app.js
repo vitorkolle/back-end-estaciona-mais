@@ -269,7 +269,7 @@ app.put('/v1/estacionaMais/novaMarca/:id', cors(), bodyParserJSON, async functio
     // Recebe todos os dados encaminhados na requisição pelo body        
     let dadosBody = request.body
 
-    let resultDadosNovaMarca = await controllerMarca.setInserirMarca(dadosBody, contentType, idV);
+    let resultDadosNovaMarca = await controllerMarca.setAtualizarMarca(dadosBody, contentType, idV);
 
     console.log(resultDadosNovaMarca)
     response.status(resultDadosNovaMarca.status_code)
@@ -289,7 +289,7 @@ app.get('/v1/estacionaMais/listarTipoVaga', cors(), async function (request, res
     response.json(resultDadosTipoVagas)
 })
 
-app.get('/v1/estacionaMais/buscarTipoVeiculo/:id', cors(), async function (request, response) {
+app.get('/v1/estacionaMais/buscarTipoVaga/:id', cors(), async function (request, response) {
     let idV = request.params.id
 
     let resultDadosTipoVagas = await controllerCategoriaVagas.getBuscarTipoVagaById(idV)
@@ -298,10 +298,11 @@ app.get('/v1/estacionaMais/buscarTipoVeiculo/:id', cors(), async function (reque
     response.status(resultDadosTipoVagas.status_code)
     response.json(resultDadosTipoVagas)
 })
-//Problema de endpoint não encontrado
+
+
 app.post('/v1/estacionaMais/novoTipoVaga', cors(), bodyParserJSON, async function (request, response) {
 
-    const contentType = request.headers['content-type'];
+    const contentType = request.header('content-type');
     console.log(contentType);
 
     // Recebe todos os dados encaminhados na requisição pelo body        
@@ -315,7 +316,8 @@ app.post('/v1/estacionaMais/novoTipoVaga', cors(), bodyParserJSON, async functio
 
 
 })
-//Problema de endpoint não encontrado
+
+
 app.delete('/v1/estacionaMais/excluirTipoVaga/:id', cors(), async function (request, response) {
 
     let idV = request.params.id
@@ -329,6 +331,23 @@ app.delete('/v1/estacionaMais/excluirTipoVaga/:id', cors(), async function (requ
 
 })
 
+
+app.put('/v1/estacionaMais/novoTipoVaga/:id', cors(), bodyParserJSON, async function (request, response) {
+    let id = request.params.id
+
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoTipoVaga = await controllerCategoriaVagas.setAtualizarCategoriaVaga(dadosBody, contentType, id);
+
+    console.log(resultDadosNovoTipoVaga)
+    response.status(resultDadosNovoTipoVaga.status_code)
+    response.json(resultDadosNovoTipoVaga)
+
+})
 
 //Ativação da porta 8080
 app.listen('8080', function () {

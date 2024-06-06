@@ -38,7 +38,7 @@ const selectTipoVagaById = async function (id) {
     } else {
         return false
     }
-
+ 
 }
 
 const insertTipoVaga = async function (dadosVaga) {
