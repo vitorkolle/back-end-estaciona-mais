@@ -94,7 +94,6 @@ const setInserirCliente = async function (dadosCliente, contentType) {
                 let novoCliente = await clienteDAO.insertCliente(dadosCliente)
                 let idNovoCliente = await clienteDAO.selectLastIdClientes()
 
-                console.log(idNovoCliente);
 
                 let enderecoJSON = {}
                 enderecoJSON.logradouro = dadosCliente.logradouro

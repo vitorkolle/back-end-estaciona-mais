@@ -212,87 +212,84 @@ app.put('/v1/estacionaMais/cor/:id', cors(), bodyParserJSON, async function (req
 
 
 /********************************Endpoints de Marca*************************************/
-app.get('/v1/estacionaMais/listarMarcas', cors(), async function(request, response){
+app.get('/v1/estacionaMais/listarMarcas', cors(), async function (request, response) {
 
     let resultDadosMarcas = await controllerMarca.getListarMarcas()
-    
+
     response.status(resultDadosMarcas.status_code)
     response.json(resultDadosMarcas)
-    
-    
-    
-    })
-    
-    app.get('/v1/estacionaMais/marca/:id', cors(), async function(request, response){
-    
+})
+
+
+app.get('/v1/estacionaMais/marca/:id', cors(), async function (request, response) {
+
     let idMarca = request.params.id
-    
+
     let resultDadosMarcas = await controllerMarca.getListarMarcaById(idMarca)
-    
+
     response.status(resultDadosMarcas.status_code)
     response.json(resultDadosMarcas)
-    
-    
-    })
-    
-    app.post('/v1/estacionaMais/novaMarca', cors(), bodyParserJSON, async function(request, response){
-    
-        const contentType = request.header('content-type');
-        console.log(contentType);
-    
-        // Recebe todos os dados encaminhados na requisição pelo body        
-        let dadosBody = request.body
-    
-        let resultDadosNovaMarca= await controllerMarca.setInserirMarca(dadosBody, contentType);
-    
-        console.log(resultDadosNovaMarca)
-        response.status(resultDadosNovaMarca.status_code)
-        response.json(resultDadosNovaMarca)
-    
-    
-    
-    })
-    app.delete('/v1/estacionaMais/deleteMarca/:id', cors(), async function(request, response){
-    
+
+})
+
+app.post('/v1/estacionaMais/novaMarca', cors(), bodyParserJSON, async function (request, response) {
+
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaMarca = await controllerMarca.setInserirMarca(dadosBody, contentType);
+
+    console.log(resultDadosNovaMarca)
+    response.status(resultDadosNovaMarca.status_code)
+    response.json(resultDadosNovaMarca)
+
+
+
+})
+app.delete('/v1/estacionaMais/deleteMarca/:id', cors(), async function (request, response) {
+
     let id = request.params.id
-    
+
     let resultDadosMarcas = await controllerMarca.setExcluirMarca(id)
-    
+
     response.status(resultDadosMarcas.status_code)
     response.json(resultDadosMarcas)
-    
-    })
-    app.put('/v1/estacionaMais/novaMarca/:id', cors(), bodyParserJSON, async function(request, response){
-    
-        let idV = request.params.id
-    
-        const contentType = request.header('content-type');
-        console.log(contentType);
-    
-        // Recebe todos os dados encaminhados na requisição pelo body        
-        let dadosBody = request.body
-    
-        let resultDadosNovaMarca = await controllerMarca.setInserirMarca(dadosBody, contentType, idV);
-    
-        console.log(resultDadosNovaMarca)
-        response.status(resultDadosNovaMarca.status_code)
-        response.json(resultDadosNovaMarca)
-    
-    
-    
-    })
+
+})
+app.put('/v1/estacionaMais/novaMarca/:id', cors(), bodyParserJSON, async function (request, response) {
+
+    let idV = request.params.id
+
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaMarca = await controllerMarca.setInserirMarca(dadosBody, contentType, idV);
+
+    console.log(resultDadosNovaMarca)
+    response.status(resultDadosNovaMarca.status_code)
+    response.json(resultDadosNovaMarca)
+
+
+
+})
 
 
 /************************Endpoints de categoria de vagas****************************/
-app.get('/v1/estacionaMais/listarTipoVaga', cors(), async function(request, response){
+app.get('/v1/estacionaMais/listarTipoVaga', cors(), async function (request, response) {
     let resultDadosTipoVagas = await controller_categoriaVaga.getListarTipoVaga()
- 
+
     console.log(resultDadosTipoVagas);
     response.status(resultDadosTipoVagas.status_code)
-    response.json(resultDadosTipoVagas)    
+    response.json(resultDadosTipoVagas)
 })
 
-app.get('/v1/estacionaMais/buscarTipoVeiculo/:id', cors(), async function(request, response){
+app.get('/v1/estacionaMais/buscarTipoVeiculo/:id', cors(), async function (request, response) {
     let idV = request.params.id
 
     let resultDadosTipoVagas = await controllerCategoriaVagas.getBuscarTipoVagaById(idV)
@@ -302,7 +299,7 @@ app.get('/v1/estacionaMais/buscarTipoVeiculo/:id', cors(), async function(reques
     response.json(resultDadosTipoVagas)
 })
 //Problema de endpoint não encontrado
-app.post('/v1/estacionaMais/novoTipoVaga', cors(), bodyParserJSON, async function(request, response){
+app.post('/v1/estacionaMais/novoTipoVaga', cors(), bodyParserJSON, async function (request, response) {
 
     const contentType = request.headers['content-type'];
     console.log(contentType);
@@ -319,18 +316,18 @@ app.post('/v1/estacionaMais/novoTipoVaga', cors(), bodyParserJSON, async functio
 
 })
 //Problema de endpoint não encontrado
-app.delete('/v1/estacionaMais/excluirTipoVaga/:id', cors(), async function(request, response){
+app.delete('/v1/estacionaMais/excluirTipoVaga/:id', cors(), async function (request, response) {
 
     let idV = request.params.id
-    
+
     let resultDadosVagas = await controllerCategoriaVagas.setExcluirTipoVaga(idV)
-    
+
     console.log(resultDadosVagas);
     response.status(resultDadosVagas.status_code)
     response.json(resultDadosVagas)
-    
-    
-    })
+
+
+})
 
 
 //Ativação da porta 8080
