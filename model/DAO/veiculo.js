@@ -66,33 +66,37 @@ if(rsVeiculo){
 
 }
 
-const deleteVeiculo = async function(dadosVeiculo){
+const deleteVeiculo = async function(id){
 
-let sql = `delete from tbl_veiculo where id = ${dadosVeiculo.id}`
-
-console.log(sql);
-
-const rsVeiculo = await prisma.$executeRawUnsafe(sql)
-
-if(rsVeiculo){
-    return rsVeiculo
-} else{
-    return false
-}
-
-
-}
+    let sql = `delete from tbl_veiculo where id = ${id}`
+   
+    console.log(sql);
+    
+    let rsVeiculo = await prisma.$executeRawUnsafe(sql)
+    
+    
+    
+    if(rsVeiculo){
+        return rsVeiculo
+    } else{
+        return false
+    }
+    
+    }
+    
 
 const updateVeiculo = async function(dadosVeiculo){
 
-let sql = `UPDATE tbl_marcas SET
+let sql = `UPDATE tbl_veiculo SET
 placa = "${dadosVeiculo.placa}",
 modelo = "${dadosVeiculo.modelo}",
 id_marca = "${dadosVeiculo.id_marca}",
 id_cor = "${dadosVeiculo.id_cor}",
 id_tipo_veiculo = "${dadosVeiculo.id_tipo_veiculo}"
 where id = ${dadosVeiculo.id}`
- 
+
+console.log(sql);
+
 const rsVeiculo = await prisma.$executeRawUnsafe(sql)
 
 if(rsVeiculo){

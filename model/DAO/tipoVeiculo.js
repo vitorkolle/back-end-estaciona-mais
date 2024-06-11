@@ -92,7 +92,9 @@ const deleteTipoVeiculo = async function (id) {
 
         sql = `delete from tbl_tipo_veiculo where id = ${id}`
 
-        let result = await prisma.$queryRawUnsafe(sql)
+        console.log(sql);
+        
+        let result = await prisma.$executeRawUnsafe(sql)
 
         if(result){
             return result
