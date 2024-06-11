@@ -24,7 +24,6 @@ const controllerReserva = require('./controller/controller_reserva.js')
 const controllerTipoVeiculo = require('./controller/controller_tipoVeiculo.js')
 const controllerVaga = require('./controller/controller_vaga.js')
 const controllerVeiculo = require('./controller/controller_veiculo.js')
-const cor = require('./model/DAO/cor.js')
 const { json } = require('body-parser')
 /**************************************************************************************/
 
@@ -418,7 +417,121 @@ app.get('/v1/estacionaMais/listarVeiculos', cors(), async function(request, resp
     
     })
 
+/*******************************CRUD DE FUNCIONARIOS**************************************/
 
+app.get('/v1/estacionaMais/funcionarios', cors(), async function(request, response){
+    let resultDadosFuncionarios = await controllerFuncionario.getListarFuncionarioById()
+
+    response.status(resultDadosFuncionarios.status_code)
+    response.json(resultDadosFuncionarios)
+})
+
+app.get('/v1/estacionaMais/funcionario/:id', cors(), async function(request, response){
+    let idF = request.params.id
+
+    let resultDadosFuncionarios = await controllerFuncionario.getListarFuncionarioById(idF)
+
+    response.status(resultDadosFuncionarios.status_code)
+    response.json(resultDadosFuncionarios)
+})
+
+app.post('/v1/estacionaMais/funcionarioNovo', cors(), bodyParserJSON, async function(request, response){
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoFuncionario = await controllerFuncionario.setInserirFuncionario(dadosBody, contentType);
+
+    console.log(resultDadosNovoFuncionario)
+    response.status(resultDadosNovoFuncionario.status_code)
+    response.json(resultDadosNovoFuncionario)
+})
+
+app.delete('/v1/estacionaMais/deleteFuncionario/:id', cors(), async function(request, response){
+    let idF = request.params.id
+
+    let resultDadosFuncionarios = await controllerFuncionario.setExcluirFuncionario(idF)
+
+    response.status(resultDadosFuncionarios.status_code)
+    response.json(resultDadosFuncionarios)
+})
+
+app.put('/v1/estacionaMais/updateFuncionario/:id', cors(), bodyParserJSON, async function(request, response){
+    let idF = request.params.id
+    
+    const contentType = request.headers['content-type'];
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovoFuncionario = await controllerFuncionario.setInserirFuncionario(dadosBody, contentType, idF);
+
+    console.log(resultDadosNovoFuncionario)
+    response.status(resultDadosNovoFuncionario.status_code)
+    response.json(resultDadosNovoFuncionario)
+})
+
+/*******************************************CRUD DE FORMA DE PAGAMENTOS*****************************************/
+
+app.get('/v1/estacionaMais/formaPagamento', cors(), async function(request, response){
+    let resultDadosFormaPagamento = await controllerFormaPagamento.getListarFormaPagamentos()
+
+    response.status(resultDadosFormaPagamento.status_code)
+    response.json(resultDadosFormaPagamento)
+})
+
+app.get('/v1/estacionaMais/formaPagamento/:id', cors(), async function(request, response){
+
+let idFp = request.params.id
+
+let resultDadosFormaPagamento = await controllerFormaPagamento.getBuscarIdFormaPagamento(idFp)
+
+response.status(resultDadosFormaPagamento.status_code)
+response.json(resultDadosFormaPagamento)
+
+
+})
+app.post('/v1/estacionaMais/novaFormaPagamento', cors(), bodyParserJSON, async function(request, response){
+    const contentType = request.headers['content-type'];
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaFormaPagamento = await controllerFormaPagamento.setInserirFormaPagamento(dadosBody, contentType);
+
+    console.log(resultDadosNovaFormaPagamento)
+    response.status(resultDadosNovaFormaPagamento.status_code)
+    response.json(resultDadosNovoFuncionario)
+})
+
+app.put('/v1/estacionaMais/updateFormaPagamento/:id', cors(), bodyParserJSON, async function(request, response){
+     let idFp = request.params.id
+   
+    const contentType = request.headers['content-type'];
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaFormaPagamento = await controllerFormaPagamento.setInserirFormaPagamento(dadosBody, contentType, idFp);
+
+    console.log(resultDadosNovaFormaPagamento)
+    response.status(resultDadosNovaFormaPagamento.status_code)
+    response.json(resultDadosNovoFuncionario)
+})
+
+app.delete('/v1/estacionaMais/deleteFormaPagamento/:id', cors(), async function(request, response){
+    let idFp = request.params.id
+
+    let resultDadosFormaPagamento = await controllerFormaPagamento.setExcluirFormaPagamento(idFp)
+
+    response.status(resultDadosFormaPagamento.status_code)
+    response.json(resultDadosFormaPagamento)
+})
 
 
 
@@ -641,7 +754,7 @@ app.post('/v1/estacionaMais/novaReserva', cors(), bodyParserJSON, async function
 
     let resultDadosNovaReserva = await controllerReserva.setInserirReserva(dadosBody, contentType);
 
-<<<<<<< main
+
     console.log(resultDadosNovaReserva)
     response.status(resultDadosNovaReserva.status_code)
     response.json(resultDadosNovaReserva)
@@ -669,7 +782,7 @@ app.put('/v1/estacionaMais/updateReserva/:id', cors(), bodyParserJSON, async fun
     response.status(resultDadosNovaReserva.status_code)
     response,json(resultDadosNovaReserva)
 })
-=======
+
 
 /****************************Endpoints de vaga*****************************/
 //get de todas as vagas
@@ -831,7 +944,7 @@ app.get('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
 
 
 
->>>>>>> main
+
 //Ativação da porta 8080
 app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');
