@@ -354,8 +354,13 @@ foreign key(id_disponibilidade) references tbl_disponibilidade(id),
 ##FK COBERTURA VAGAS
 id_cobertura integer not null,
 constraint FK_COBERTURA_VAGAS
-foreign key(id_disponibilidade) references tbl_cobertura(id)
+foreign key(id_cobertura) references tbl_cobertura(id)
 );
+
+select * from tbl_disponibilidade;
+set foreign_key_checks = 1;
+drop table tbl_vagas;
+
 insert into tbl_vagas(codigo_vaga, piso, id_categoria_vagas, id_disponibilidade, id_cobertura)values
 (
 'AAAA1',
@@ -367,7 +372,18 @@ insert into tbl_vagas(codigo_vaga, piso, id_categoria_vagas, id_disponibilidade,
 
 select * from tbl_vagas;
 
+insert into tbl_veiculo(placa, modelo, id_marca, id_cor, id_tipo_veiculo) values
+("aaaa-000", "camaro", "6", "1", "2");
 
+select * from tbl_tipo_veiculo;
+
+UPDATE tbl_veiculo SET
+placa = "bcbb-112",
+modelo = "jetta",
+id_marca = "10",
+id_cor = "1",
+id_tipo_veiculo = "2"
+where id = 3;
 
 ##Tabela de Reservas
 create table tbl_reservas(
@@ -397,12 +413,21 @@ insert into tbl_reservas(entrada, saida, id_vaga, id_pagamento, id_cliente)value
 (
 '2024-05-21 10:58:01',
 '2024-005-21 12:34:21',
-1,
+2,
 1,
 1
 );
+UPDATE tbl_reservas SET
+entrada = "2024-05-21 10:58:21",
+saida = "2024-05-21 10:58:21",
+id_vaga = "2",
+id_pagamento = "1",
+id_cliente = "1"
+where id = 5;
 
-select * from tbl_reservas;
+select * from tbl_veiculo where id = 2;
+
+select * from tbl_vagas;
 
 
 

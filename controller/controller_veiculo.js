@@ -82,11 +82,12 @@ const setAtualizarVeiculo = async function(dadosVeiculo, contentType, id){
                 let validadeStatus = true
 
                 if(validadeStatus){
+                    dadosVeiculo.id = id;
                     let veiculoNovo = await veiculoDAO.updateVeiculo(dadosVeiculo)
                     console.log(veiculoNovo);
-                    const idV = dadosVeiculo.id = id;
 
-                    if(veiculoNovo & idV){
+                    if(veiculoNovo){
+                        veiculoJSON.id = id
                         veiculoJSON.file = dadosVeiculo
                         veiculoJSON.quantidade = dadosVeiculo.length
                         veiculoJSON.status = message.SUCCESS_CREATED_ITEM.status
