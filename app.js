@@ -417,7 +417,123 @@ app.get('/v1/estacionaMais/listarVeiculos', cors(), async function(request, resp
     
     })
 
-/**********************************************CRUD DE RESERVA************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**********************************************CRUD DE RESERVA************************************/
 app.get('/v1/estacionaMais/reservas', cors(), async function(request, response){
     let resultDadosReservas = await controllerReserva.getListarReservas()
 
@@ -557,6 +673,16 @@ app.post('/v1/estacionaMais/pagamento', cors(), bodyParserJSON, async function(r
 
     response.status(resultPagamento.status_code)
     response.json(resultPagamento)
+})
+
+//delete de pagamento
+app.delete('/v1/estacionaMais/pagamento/:id', cors(), async function(request, response){
+    let id = request.params.id
+
+    let resultPagamento = await controllerPagamentos.setDeletarPagamento(id)
+
+    response.status(resultPagamento.status_code)
+    response.json(response)
 })
 //Ativação da porta 8080
 app.listen('8080', function () {

@@ -67,8 +67,27 @@
      }
  }
 
+ const deletePagamento = async function(id){
+     try {
+         let sql = `delete from tbl_pagamentos where id = ${id}`
+
+         let rsPagamento = await prisma.$executeRawUnsafe(sql)
+
+         if(rsPagamento){
+             return true
+         }else{
+             return false
+         }
+     } catch (error) {
+         return false
+     }
+ }
+
+ const 
+
  module.exports = {
      getAllPagamentos,
      getByIdPagamento,
-     insertPagamento
+     insertPagamento,
+     deletePagamento
  }

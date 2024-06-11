@@ -54,6 +54,7 @@ const getBuscarPagamento = async function(id){
 }
 
 const setInserirPagamento = async function(dadosPagamento, contentType){
+    try {
     const contentType = contentType
     let dadosPagamento = dadosPagamento
 
@@ -83,14 +84,36 @@ const setInserirPagamento = async function(dadosPagamento, contentType){
     }
     }else{
         return message.ERROR_CONTENT_TYPE //415
+    }   
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER //500    
     }
         
 }
 
 
+const setDeletarPagamento = async function(id){
+    let idPagamento = id
+
+    let validarId = await pagamentoDAO.getByIdPagamento(idPagamento)
+
+    if(validarId.length > 0){
+        let rsPagamento = await pagamentoDAO.deletePagamento(idPagamento)
+
+        if(rsPagamento){
+            return message.SUCCESS_DELETED_ITEM //200
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB //500
+        }
+    }else{
+        return message.ERROR_NOT_FOUND //404
+    }
+}
+
 
 module.exports = {
     getALLPagamentos,
     getBuscarPagamento,
-    setInserirPagamento
+    setInserirPagamento,
+    setDeletarPagamento
 }
