@@ -24,6 +24,23 @@
      }
  }
 
+ const getByIdPagamento = async function(id){
+     try {
+         let sql = `select * from tbl_pagamentos where id = ${id}`
+
+         let rsPagamento = await prisma.$queryRawUnsafe(sql)
+
+         if(rsPagamento){
+             return rsPagamento
+         }else{
+             return false
+         }
+     } catch (error) {
+         return false
+     }
+ }
+
  module.exports = {
-     getAllPagamentos
+     getAllPagamentos,
+     getByIdPagamento
  }

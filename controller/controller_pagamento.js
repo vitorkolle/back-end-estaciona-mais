@@ -14,6 +14,8 @@ const getALLPagamentos = async function(){
 
     if(rsPagamento){
         if(rsPagamento.length > 0){
+
+            // Fazer atribuição à forma de pagamento
             pagamentoJSON.pagamentos = rsPagamento
             pagamentoJSON.quantidade = rsPagamento.length
             pagamentoJSON.status_code = 200
@@ -27,8 +29,33 @@ const getALLPagamentos = async function(){
     }
 }
 
+const getBuscarPagamento = async function(id){
+    let idPagamento = id
+
+    if(idPagamento == '' || idPagamento == undefined || isNaN(idPagamento)){
+        return message.ERROR_INVALID_ID //400
+    }else{
+        let pagamentoJSON = {}
+        let resultPagamento = await pagamentoDAO.getByIdPagamento(idPagamento)
+
+        if(resultPagamento){
+            if(resultPagamento.length > 0){
+                pagamentoJSON.pagamento = resultPagamento
+                pagamentoJSON.status_code = 200
+
+                return pagamentoJSON
+            }else{
+                return message.ERROR_NOT_FOUND //404
+            }
+        }else{
+            return message.ERROR_INTERNAL_SERVER //500
+        }
+    }
+}
+
 
 
 module.exports = {
-    getALLPagamentos
+    getALLPagamentos,
+    getBuscarPagamento
 }

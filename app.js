@@ -537,6 +537,19 @@ app.get('/v1/estacionaMais/pagamentos', cors(), async function(request, response
     response.json(resultPagamentos)
 })
 
+//get de pagamento filtrando pelo id
+app.get('/v1/estacionaMais/pagamento/:id', cors(), async function(request, response){
+    let idPagamento = request.params.id
+
+    let resultPagamento = await controllerPagamentos.getBuscarPagamento(idPagamento)
+
+    response.status(resultPagamento.status_code)
+    response.json(resultPagamento)
+})
+
+
+
+
 //Ativação da porta 8080
 app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');
