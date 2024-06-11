@@ -548,8 +548,16 @@ app.get('/v1/estacionaMais/pagamento/:id', cors(), async function(request, respo
 })
 
 
+//insert de pagamento
+app.post('/v1/estacionaMais/pagamento', cors(), bodyParserJSON, async function(request, response){
+    let contentType = request.header('content-type')
+    let dadosBody = request.body
 
+    let resultPagamento = await controllerPagamentos.setInserirPagamento(dadosBody, contentType)
 
+    response.status(resultPagamento.status_code)
+    response.json(resultPagamento)
+})
 //Ativação da porta 8080
 app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');

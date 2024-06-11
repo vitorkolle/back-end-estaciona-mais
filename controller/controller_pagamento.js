@@ -53,9 +53,44 @@ const getBuscarPagamento = async function(id){
     }
 }
 
+const setInserirPagamento = async function(dadosPagamento, contentType){
+    const contentType = contentType
+    let dadosPagamento = dadosPagamento
+
+    if(String(contentType).toLowerCase() == 'application/json'){
+    if
+    (
+        dadosPagamento.valor == ''              || dadosPagamento.valor == null              || dadosPagamento.valor == undefined              || isNaN(dadosPagamento.valor)                ||
+        dadosPagamento.data_pagamento == ''     || dadosPagamento.data_pagamento == null     || dadosPagamento.data_pagamento == undefined     || dadosPagamento.data_pagamento.length != 19 ||
+        dadosPagamento.id_forma_pagamento == '' || dadosPagamento.id_forma_pagamento == null || dadosPagamento.id_forma_pagamento == undefined || isNaN(dadosPagamento.id_forma_pagamento)   ||
+        dadosPagamento.pago == ''               || dadosPagamento.pago == null               || dadosPagamento.pago == undefined
+    ) {
+        return message.ERROR_REQUIRED_FIELDS //400
+    }else{
+        let pagamentoJSON = {}
+        let novoPagamento = await pagamentoDAO.insertPagamento(dadosPagamento)
+
+        if(novoPagamento){
+            pagamentoJSON.pagamento = dadosPagamento
+            pagamentoJSON.status = message.SUCCESS_CREATED_ITEM.status
+            pagamentoJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+            pagamentoJSON.message = message.SUCCESS_CREATED_ITEM.message
+
+            return pagamentoJSON
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB //500
+        }
+    }
+    }else{
+        return message.ERROR_CONTENT_TYPE //415
+    }
+        
+}
+
 
 
 module.exports = {
     getALLPagamentos,
-    getBuscarPagamento
+    getBuscarPagamento,
+    setInserirPagamento
 }

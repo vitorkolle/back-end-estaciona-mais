@@ -40,7 +40,35 @@
      }
  }
 
+ const insertPagamento = async function(dadosPagamento){
+     try {
+         let sql = `insert into tbl_pagamentos(
+                                              valor,
+                                              data_pagamento,
+                                              id_forma_pagamento,
+                                              pago
+                                               )
+                                    values(
+                                         ${dadosPagamento.valor},
+                                         '${dadosPagamento.data_pagamento}',
+                                         ${dadosPagamento.id_forma_pagamento},
+                                         ${dadosPagamento.pago}
+                                           )`
+
+          let rsPagamento = await prisma.$executeRawUnsafe(sql)
+
+          if(rsPagamento){
+              return true
+          }else{
+              return false
+          }
+     } catch (error) {
+         return false
+     }
+ }
+
  module.exports = {
      getAllPagamentos,
-     getByIdPagamento
+     getByIdPagamento,
+     insertPagamento
  }
