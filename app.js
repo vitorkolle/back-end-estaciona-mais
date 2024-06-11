@@ -24,6 +24,8 @@ const controllerReserva = require('./controller/controller_reserva.js')
 const controllerTipoVeiculo = require('./controller/controller_tipoVeiculo.js')
 const controllerVaga = require('./controller/controller_vaga.js')
 const controllerVeiculo = require('./controller/controller_veiculo.js')
+const cor = require('./model/DAO/cor.js')
+const { json } = require('body-parser')
 /**************************************************************************************/
 
 //Criação do app
@@ -346,9 +348,260 @@ app.put('/v1/estacionaMais/novoTipoVaga/:id', cors(), bodyParserJSON, async func
     console.log(resultDadosNovoTipoVaga)
     response.status(resultDadosNovoTipoVaga.status_code)
     response.json(resultDadosNovoTipoVaga)
-
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**********************************************CRUD DE RESERVA************************************/
+app.get('/v1/estacionaMais/reservas', cors(), async function(request, response){
+    let resultDadosReservas = await controllerReserva.getListarReservas()
+
+    response.status(resultDadosReservas.status_code)
+    response.json(resultDadosReservas)
+})
+
+app.get('/v1/estacionaMais/reserva/:id', cors(), async function(request, response){
+    let idR = request.params.id
+
+    let resultDadosReservas = await controllerReserva.getListarReservaById(idR)
+
+    response.status(resultDadosReservas.status_code)
+    response.json(resultDadosReservas)
+})
+app.post('/v1/estacionaMais/novaReserva', cors(), bodyParserJSON, async function (request, response){
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaReserva = await controllerReserva.setInserirReserva(dadosBody, contentType);
+
+<<<<<<< main
+    console.log(resultDadosNovaReserva)
+    response.status(resultDadosNovaReserva.status_code)
+    response.json(resultDadosNovaReserva)
+})
+app.delete('/v1/estacionaMais/deleteReserva/:id', cors(), async function(request, response){
+    let idR = request.params.id
+
+    let resultDadosReservas = await controllerReserva.setExcluirReserva(idR)
+
+    response.status(resultDadosReservas.status_code)
+    response.json(resultDadosReservas)
+})
+app.put('/v1/estacionaMais/updateReserva/:id', cors(), bodyParserJSON, async function (request, response){
+    let idR = request.params.id
+
+    const contentType = request.header('content-type');
+    console.log(contentType);
+
+    // Recebe todos os dados encaminhados na requisição pelo body        
+    let dadosBody = request.body
+
+    let resultDadosNovaReserva = await controllerReserva.setAtualizarReserva(dadosBody, contentType, idR)
+
+    console.log(resultDadosNovaReserva)
+    response.status(resultDadosNovaReserva.status_code)
+    response,json(resultDadosNovaReserva)
+})
+=======
 
 /****************************Endpoints de vaga*****************************/
 //get de todas as vagas
@@ -510,6 +763,7 @@ app.get('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
 
 
 
+>>>>>>> main
 //Ativação da porta 8080
 app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');

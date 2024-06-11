@@ -1,5 +1,5 @@
 /**********************************************************************************************************************
- * Autor: Vitor Paes Kolle
+ * Autor: Gabriel de Barros
  * Objetivo: Arquivo responsável pelo acesso ao banco de dados MySql, aqui faremos o CRUD na tabela de Categoria de Vagas
  * Data: 21/05
  * Versão: 1.0 
