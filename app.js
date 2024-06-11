@@ -573,6 +573,7 @@ app.post('/v1/estacionaMais/novaReserva', cors(), bodyParserJSON, async function
 
     let resultDadosNovaReserva = await controllerReserva.setInserirReserva(dadosBody, contentType);
 
+<<<<<<< main
     console.log(resultDadosNovaReserva)
     response.status(resultDadosNovaReserva.status_code)
     response.json(resultDadosNovaReserva)
@@ -600,6 +601,169 @@ app.put('/v1/estacionaMais/updateReserva/:id', cors(), bodyParserJSON, async fun
     response.status(resultDadosNovaReserva.status_code)
     response,json(resultDadosNovaReserva)
 })
+=======
+
+/****************************Endpoints de vaga*****************************/
+//get de todas as vagas
+app.get('/v1/estacionaMais/vagas', cors(), async function(request, response){
+    
+    let resultVagas = await controllerVaga.getAllVagas()
+
+    response.status(resultVagas.status_code)
+    response.json(resultVagas)
+
+})
+
+//get de vaga filtrando pelo id
+app.get('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
+    let idVaga = request.params.id
+
+    let resultVaga = await controllerVaga.getBuscarVaga(idVaga)
+
+    response.status(resultVaga.status_code)
+    response.json(resultVaga)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> main
 //Ativação da porta 8080
 app.listen('8080', function () {
     console.log('API funcionando e aguardando requisições!!!');
