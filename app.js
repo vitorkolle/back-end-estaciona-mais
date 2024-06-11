@@ -516,6 +516,18 @@ app.delete('/v1/estacionaMais/vaga/:id', cors(), async function(request, respons
     response.json = rsVaga
 })
 
+//update de vaga
+app.put('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
+    let id = request.params.id
+    let dadosBody = request.body
+    let contentType = request.header('content-type')
+
+    let rsVaga = await controllerVaga.setAtualizarVaga(id, dadosBody, contentType)
+
+    response.status(rsVaga.status_code)
+    response.json(rsVaga)
+})
+
 
 //Ativação da porta 8080
 app.listen('8080', function () {

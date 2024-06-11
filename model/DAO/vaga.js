@@ -136,6 +136,31 @@ const deleteVaga = async function(id){
        return false 
     }
 }
+
+const updateVaga = async function(dadosVaga){
+    try {
+        let sql = 
+        `
+        update tbl vagas
+        set
+        codigo_vaga = '${dadosVaga.codigo_vaga}',
+        piso = ${dadosVaga.piso},
+        id_categoria_vagas = ${dadosVaga.id_categoria_vagas},
+        id_disponibilidade = ${dadosVaga.id_disponibilidade},
+        id_cobertura = ${dadosVaga.id_cobertura}
+        `
+
+        let rsVaga = await prisma.$executeRawUnsafe(sql)
+
+        if(rsVaga){
+            return true
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 module.exports = {
     selectAllVagas,
     selectDisponibilidade,
@@ -143,5 +168,6 @@ module.exports = {
     selectByIdVaga,
     selectLastIdVagas,
     insertVaga,
-    deleteVaga
+    deleteVaga,
+    updateVaga
 }

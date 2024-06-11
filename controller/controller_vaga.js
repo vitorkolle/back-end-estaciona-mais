@@ -135,9 +135,46 @@ const setDeleteVaga = async function(id){
     }
 }
 
+const setAtualizarVaga = async function(id, dadosVaga, contentType){
+    try {
+        const content_type = contentType
+
+        if(String(content_type).toLowerCase() == 'application/json'){
+       
+        let idVaga = id
+        let validarId = await vagaDAO.selectByIdVaga(idVaga)
+
+        if(validarId.length > 0){
+            let vagaJSON = {}
+
+            dadosVaga.id = idVaga
+            let rsVaga = await vagaDAO.updateVaga()
+
+            if(rsVaga){
+                vagaJSON.data = dadosVaga
+                vagaJSON.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+                vagaJSON.status = message.SUCCESS_UPDATED_ITEM.status
+                vagaJSON.message = message.SUCCESS_UPDATED_ITEM.message
+
+                return vagaJSON
+            }else{
+                return message.ERROR_INTERNAL_SERVER //500
+            }
+        }else{
+            return message,message.ERROR_NOT_FOUND //404
+        }
+        }else{
+            return message.ERROR_CONTENT_TYPE //415
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER //500
+    }
+}
+
 module.exports = {
     getAllVagas,
     getBuscarVaga,
     setInserirVaga,
-    setDeleteVaga
+    setDeleteVaga,
+    setAtualizarVaga
 }
