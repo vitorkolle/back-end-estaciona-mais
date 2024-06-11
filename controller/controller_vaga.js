@@ -115,10 +115,29 @@ const setInserirVaga = async function(dadosVaga, contentType){
     } catch (error) {
         return message.ERROR_INTERNAL_SERVER //500 controller
     }
+} 
+
+const setDeleteVaga = async function(id){
+    let idVaga = id
+
+    let validarId = await vagaDAO.selectByIdVaga(idVaga)
+
+    if(validarId.length > 0){
+        let rsVaga = await vagaDAO.deleteVaga(idVaga)
+
+        if(rsVaga){
+            return message.SUCCESS_DELETED_ITEM //200
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB //500
+        }
+    }else{
+        return message.ERROR_NOT_FOUND //404
+    }
 }
 
 module.exports = {
     getAllVagas,
     getBuscarVaga,
-    setInserirVaga
+    setInserirVaga,
+    setDeleteVaga
 }

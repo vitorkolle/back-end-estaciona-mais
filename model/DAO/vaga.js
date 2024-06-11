@@ -120,11 +120,28 @@ const insertVaga = async function(dadosVaga){
         return false
     }
 }
+
+const deleteVaga = async function(id){
+    try {
+        let sql = `delete from tbl_vagas where id = ${id}`
+
+        let rsVaga = await prisma.$executeRawUnsafe(sql)
+
+        if(rsVaga){
+            return true
+        }else{
+            return false
+        }
+    } catch (error) {
+       return false 
+    }
+}
 module.exports = {
     selectAllVagas,
     selectDisponibilidade,
     selectCobertura,
     selectByIdVaga,
     selectLastIdVagas,
-    insertVaga
+    insertVaga,
+    deleteVaga
 }

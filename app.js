@@ -502,8 +502,18 @@ app.post('/v1/estacionaMais/vaga', cors(), bodyParserJSON, async function(reques
 
     let resultDadosVaga = await controllerVaga.setInserirVaga(dadosBody, contentType)
 
-    response.status = resultDadosVaga.status_code
-    response.json = resultDadosVaga
+    response.status(resultDadosVaga.status_code)
+    response.json(resultDadosVaga)
+})
+
+//delete de vaga
+app.delete('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
+    let id = request.params.id
+
+    let rsVaga = await controllerVaga.setDeleteVaga(id)
+
+    response.status = rsVaga.status_code
+    response.json = rsVaga
 })
 
 
