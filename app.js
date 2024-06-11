@@ -349,8 +349,8 @@ app.put('/v1/estacionaMais/novoTipoVaga/:id', cors(), bodyParserJSON, async func
 
 })
 
-/****************************Endpoints de vaga*****************************/
 
+/****************************Endpoints de vaga*****************************/
 //get de todas as vagas
 app.get('/v1/estacionaMais/vagas', cors(), async function(request, response){
     
