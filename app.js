@@ -361,6 +361,16 @@ app.get('/v1/estacionaMais/vagas', cors(), async function(request, response){
 
 })
 
+//get de vaga filtrando pelo id
+app.get('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
+    let idVaga = request.params.id
+
+    let resultVaga = await controllerVaga.getBuscarVaga(idVaga)
+
+    response.status(resultVaga.status_code)
+    response.json(resultVaga)
+})
+
 
 
 

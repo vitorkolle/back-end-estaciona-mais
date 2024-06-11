@@ -55,8 +55,25 @@ const selectCobertura = async function(id){
         return false
     }
 }
+
+const selectByIdVaga = async function(id){
+    try {
+        let sql = `select * from tbl_vagas where id = ${id}`
+
+        let rsVaga = await prisma.$queryRawUnsafe(sql)
+
+        if(rsVaga){
+            return rsVaga
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 module.exports = {
     selectAllVagas,
     selectDisponibilidade,
-    selectCobertura
+    selectCobertura,
+    selectByIdVaga
 }

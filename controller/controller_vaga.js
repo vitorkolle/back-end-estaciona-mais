@@ -29,7 +29,7 @@ const getAllVagas = async function(){
                 element.disponibilidade = disponibilidade[0].disponibilidade
 
                 cobertura = await vagaDAO.selectCobertura(element.id_cobertura)
-                element.coberto = cobertura[0].cobertura
+                element.cobertura = cobertura[0].cobertura
             }
 
             vagasJSON.vagas = dadosVagas
@@ -45,6 +45,41 @@ const getAllVagas = async function(){
     }
 }
 
+const getBuscarVaga = async function(id){
+    let idVaga = id
+
+    if(idVaga == '' || idVaga == undefined || isNaN(idVaga)){
+        return message.ERROR_INVALID_ID //400
+    }else{
+        const vagaJSON = {}
+
+        let dadosVaga = await vagaDAO.selectByIdVaga(idVaga)
+        console.log(dadosVaga);
+        if(dadosVaga){
+            if(dadosVaga.length > 0){
+                let categoriaVaga = await categoriaVagaDAO.selectTipoVagaById(dadosVaga[0].id_categoria_vagas)
+                let disponibilidade = await vagaDAO.selectDisponibilidade(dadosVaga[0].id_disponibilidade)
+                let cobertura = await vagaDAO.selectCobertura(dadosVaga[0].id_cobertura)
+
+                dadosVaga[0].categoria_vaga = categoriaVaga[0].disponibilidade
+                dadosVaga[0].disponibilidade = disponibilidade[0].disponibilidade
+                dadosVaga[0].cobertura = cobertura[0].cobertura
+
+
+                vagaJSON.vaga = dadosVaga
+                vagaJSON.status_code = 200
+
+                return vagaJSON
+            }else{
+                return message.ERROR_NOT_FOUND //404
+            }
+        }else{
+            return message.ERROR_INTERNAL_SERVER_DB //500
+        }
+    }
+}
+
 module.exports = {
-    getAllVagas
+    getAllVagas,
+    getBuscarVaga
 }
