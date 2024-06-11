@@ -24,7 +24,6 @@ const controllerReserva = require('./controller/controller_reserva.js')
 const controllerTipoVeiculo = require('./controller/controller_tipoVeiculo.js')
 const controllerVaga = require('./controller/controller_vaga.js')
 const controllerVeiculo = require('./controller/controller_veiculo.js')
-const cor = require('./model/DAO/cor.js')
 const { json } = require('body-parser')
 /**************************************************************************************/
 
@@ -528,6 +527,15 @@ app.put('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
     response.json(rsVaga)
 })
 
+
+/*****************************Endpoints de Pagamento***************************/
+//get de pagamentos
+app.get('/v1/estacionaMais/pagamentos', cors(), async function(request, response){
+    let resultPagamentos = await controllerPagamentos.getALLPagamentos()
+
+    response.status(resultPagamentos.status_code)
+    response.json(resultPagamentos)
+})
 
 //Ativação da porta 8080
 app.listen('8080', function () {
