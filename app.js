@@ -1,7 +1,7 @@
 /************************************************************************************************************
  * Objetivo: Arquivo responsável pela criação de API no projeto
  * Data: 21/05
- * Autor: Vitor Paes Kolle 
+ * Autor: Vitor Paes Kolle e Gabriel de Barros
  * Versão: 1.0 
  ***********************************************************************************************************/
 
@@ -647,89 +647,7 @@ app.delete('/v1/estacionaMais/deleteFormaPagamento/:id', cors(), async function(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**********************************************CRUD DE RESERVA************************************/
+    /**********************************************CRUD DE RESERVA************************************/
 app.get('/v1/estacionaMais/reservas', cors(), async function(request, response){
     let resultDadosReservas = await controllerReserva.getListarReservas()
 
@@ -759,6 +677,7 @@ app.post('/v1/estacionaMais/novaReserva', cors(), bodyParserJSON, async function
     response.status(resultDadosNovaReserva.status_code)
     response.json(resultDadosNovaReserva)
 })
+
 app.delete('/v1/estacionaMais/deleteReserva/:id', cors(), async function(request, response){
     let idR = request.params.id
 
@@ -767,6 +686,7 @@ app.delete('/v1/estacionaMais/deleteReserva/:id', cors(), async function(request
     response.status(resultDadosReservas.status_code)
     response.json(resultDadosReservas)
 })
+
 app.put('/v1/estacionaMais/updateReserva/:id', cors(), bodyParserJSON, async function (request, response){
     let idR = request.params.id
 
@@ -782,7 +702,6 @@ app.put('/v1/estacionaMais/updateReserva/:id', cors(), bodyParserJSON, async fun
     response.status(resultDadosNovaReserva.status_code)
     response,json(resultDadosNovaReserva)
 })
-
 
 /****************************Endpoints de vaga*****************************/
 //get de todas as vagas
@@ -805,27 +724,77 @@ app.get('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
     response.json(resultVaga)
 })
 
+//post de vaga
+app.post('/v1/estacionaMais/vaga', cors(), bodyParserJSON, async function(request, response){
+    const contentType = request.header('content-type')
 
+    let dadosBody = request.body
 
+    let resultDadosVaga = await controllerVaga.setInserirVaga(dadosBody, contentType)
 
+    response.status(resultDadosVaga.status_code)
+    response.json(resultDadosVaga)
+})
 
+//delete de vaga
+app.delete('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
+    let id = request.params.id
 
+    let rsVaga = await controllerVaga.setDeleteVaga(id)
 
+    response.status = rsVaga.status_code
+    response.json = rsVaga
+})
 
+//update de vaga
+app.put('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
+    let id = request.params.id
+    let dadosBody = request.body
+    let contentType = request.header('content-type')
 
+    let rsVaga = await controllerVaga.setAtualizarVaga(id, dadosBody, contentType)
 
+    response.status(rsVaga.status_code)
+    response.json(rsVaga)
+})
 
 
+/*****************************Endpoints de Pagamento***************************/
+//get de pagamentos
+app.get('/v1/estacionaMais/pagamentos', cors(), async function(request, response){
+    let resultPagamentos = await controllerPagamentos.getALLPagamentos()
 
+    response.status(resultPagamentos.status_code)
+    response.json(resultPagamentos)
+})
 
+//get de pagamento filtrando pelo id
+app.get('/v1/estacionaMais/pagamento/:id', cors(), async function(request, response){
+    let idPagamento = request.params.id
 
+    let resultPagamento = await controllerPagamentos.getBuscarPagamento(idPagamento)
 
+    response.status(resultPagamento.status_code)
+    response.json(resultPagamento)
+})
 
 
+//insert de pagamento
+app.post('/v1/estacionaMais/pagamento', cors(), bodyParserJSON, async function(request, response){
+    let contentType = request.header('content-type')
+    let dadosBody = request.body
 
+    let resultPagamento = await controllerPagamentos.setInserirPagamento(dadosBody, contentType)
 
+    response.status(resultPagamento.status_code)
+    response.json(resultPagamento)
+})
 
+//delete de pagamento
+app.delete('/v1/estacionaMais/pagamento/:id', cors(), async function(request, response){
+    let id = request.params.id
 
+    let resultPagamento = await controllerPagamentos.setDeletarPagamento(id)
 
 
 
@@ -944,6 +913,12 @@ app.get('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
 
 
 
+
+
+
+    response.status(resultPagamento.status_code)
+    response.json(response)
+})
 
 //Ativação da porta 8080
 app.listen('8080', function () {
