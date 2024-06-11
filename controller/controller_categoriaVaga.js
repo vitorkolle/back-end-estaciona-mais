@@ -1,7 +1,7 @@
 /************************************************************************************************************
  * Objetivo: Arquivo responsável pela validação, consisitência de dados das requisições da API de Categoria de Vagas
  * Data: 21/05
- * Autor: Vitor Paes Kolle
+ * Autor: Gabriel de Barros
  * Versão: 1.0 
  ***********************************************************************************************************/
 const vagaDAO = require('../model/DAO/categoriaVaga.js')
