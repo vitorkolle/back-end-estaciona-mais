@@ -71,9 +71,60 @@ const selectByIdVaga = async function(id){
         return false
     }
 }
+
+const selectLastIdVagas = async function(){
+    try {
+        let sql = 'select cast(last_insert_id() as decimal) as id from tbl_vagas limit 1'
+
+        let rsVaga = await prisma.$queryRawUnsafe(sql)
+
+        if(rsVaga){
+            return rsVaga
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
+
+const insertVaga = async function(dadosVaga){
+    try {
+        let sql = 
+        `
+        insert into tbl_vaga(
+                            codigo_vaga,
+                            piso,
+                            id_categoria_vagas,
+                            id_disponibilidade,
+                            id_cobertura
+                            )
+                            values
+                            (
+                               '${dadosVaga.codigo_vaga}',
+                                ${dadosVaga.piso},
+                                ${dadosVaga.id_categoria_vagas},
+                                ${dadosVaga.id_disponibilidade}
+                                ${dadosVaga.id_cobertura}
+                            )
+        `
+
+        let rsVaga = await prisma.$executeRawUnsafe(sql)
+
+        if(rsVaga){
+            return true
+        }else{
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 module.exports = {
     selectAllVagas,
     selectDisponibilidade,
     selectCobertura,
-    selectByIdVaga
+    selectByIdVaga,
+    selectLastIdVagas,
+    insertVaga
 }

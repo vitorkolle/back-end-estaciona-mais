@@ -350,6 +350,74 @@ app.put('/v1/estacionaMais/novoTipoVaga/:id', cors(), bodyParserJSON, async func
     response.json(resultDadosNovoTipoVaga)
 })
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**********************************************CRUD DE RESERVA************************************/
 app.get('/v1/estacionaMais/reservas', cors(), async function(request, response){
     let resultDadosReservas = await controllerReserva.getListarReservas()
@@ -424,6 +492,18 @@ app.get('/v1/estacionaMais/vaga/:id', cors(), async function(request, response){
 
     response.status(resultVaga.status_code)
     response.json(resultVaga)
+})
+
+//post de vaga
+app.post('/v1/estacionaMais/vaga', cors(), bodyParserJSON, async function(request, response){
+    const contentType = request.header('content-type')
+
+    let dadosBody = request.body
+
+    let resultDadosVaga = await controllerVaga.setInserirVaga(dadosBody, contentType)
+
+    response.status = resultDadosVaga.status_code
+    response.json = resultDadosVaga
 })
 
 

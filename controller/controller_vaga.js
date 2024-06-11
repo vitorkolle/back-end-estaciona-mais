@@ -15,7 +15,7 @@ const getAllVagas = async function(){
 
     if(dadosVagas){
         let categoriaVaga
-        let disponibilidade
+        let disponibilidade 
         let cobertura
 
         if(dadosVagas.length > 0){
@@ -79,7 +79,46 @@ const getBuscarVaga = async function(id){
     }
 }
 
+const setInserirVaga = async function(dadosVaga, contentType){
+    try {
+        const content_type = contentType
+
+        if(String(content_type).toLowerCase() == 'application/json'){
+        if(
+            dadosVaga.codigo_vaga == ''               || dadosVaga.codigo_vaga == null               || dadosVaga.codigo_vaga == undefined               || dadosVaga.codigo_vaga.length > 20               ||
+            dadosVaga.piso == ''                      || dadosVaga.piso == null                      || dadosVaga.piso == undefined                      || isNaN(dadosVaga.piso)                           ||
+            dadosVaga.id_categoria_vagas == ''        || dadosVaga.id_categoria_vagas == null        || dadosVaga.id_categoria_vagas == undefined        || isNaN(dadosVaga.id_categoria_vagas)             ||
+            dadosVaga.id_disponibilidade == ''        || dadosVaga.id_disponibilidade == null        || dadosVaga.id_disponibilidade == undefined        || isNaN(dadosVaga.id_disponibilidade)             ||
+            dadosVaga.id_cobertura == ''              || dadosVaga.id_cobertura == null              || dadosVaga.id_cobertura == undefined              || isNaN(dadosVaga.id_cobertura)             
+        ){
+            return message.ERROR_REQUIRED_FIELDS //400
+        }else{
+            let novaVaga = await vagaDAO.insertVaga(dadosVaga)
+            let novoIdVaga = await vagaDAO.selectLastIdVagas()
+
+            let vagaJSON = {}
+
+            if(novaVaga){
+                vagaJSON.id = Number(novoIdVaga[0]).id
+                vagaJSON.vaga = dadosVaga
+                vagaJSON.status_code = 200
+
+                return vagaJSON
+            }
+            else{
+                return message.ERROR_INTERNAL_SERVER //500
+            }
+        }
+        }else{
+            return message.ERROR_CONTENT_TYPE //415
+        }
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER //500 controller
+    }
+}
+
 module.exports = {
     getAllVagas,
-    getBuscarVaga
+    getBuscarVaga,
+    setInserirVaga
 }
